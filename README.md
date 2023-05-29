@@ -1,16 +1,52 @@
-# my_tasks
+# Entrevista Practica
 
-A new Flutter project.
+## Objetivos a evaluar
 
-## Getting Started
+- (importante) Agilidad y calidad de código
+- (importante) Comunicación al debatir ideas y correcciones
+- (importante) Claridad y concisión de PRs
+- (importante) Conocimiento basico de Github
+- (importante) Aplicacion correcta de Bloc
+- (importante) Inferencia adecuada de instrucciones vagas o incompletas; O preguntas de clarificacion.
+- (opcional/preferido) Aplicacion correcta de GoRouter
 
-This project is a starting point for a Flutter application.
+## Tareas
 
-A few resources to get you started if this is your first Flutter project:
+El objetivo principal es expandir la aplicacion basica de Flutter para que muestre varios contadores y graficas simples sobre los datos recopilados.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### 1. Añadir una Gaveta de navegacion
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Gaveta debe tener 2 botones para navegar a "Contador A" y "Contador B"
+
+### 2. Crear pagina para cada contador
+
+- Deben existir 2 paginas diferentes, una para cada contador.
+- En cada pagina se debe poder incrementar o disminuir el contador
+- Cuando se navegue de una pagina a otra, los contadores deben retener su valor
+- Cuando se cierre y se abra la aplicacion, los contadores deben retener su valor
+
+### 3. Crear una 3ra pagina que muestre:
+- Una grafica de pastel comparando los valores de cada contador
+- Una lista que muestre todos los eventos de suma o resta de cada contador. Cada elemento debe mostrar: 
+  - Nombre del contador "A" o "B"
+  - Fecha y tiempo cuando se realizo la operacion
+  - Accion realizada (suma o resta)
+  - Valor nuevo
+- La grafica y la lista deben compartir la misma pantalla
+
+### (Extra, Opcional) 4. Usar GoRouter para la navegacion
+### (Extra, Opcional) 5. Guardar informacion en una base de datos externa (Firebase, PgSQL, etc)
+### (Extra, Opcional) 6. Permitir multiples usuarios
+- En este caso no es necesario un Login, simplemente reconozca cada usuario por un ID unico del aparato que use
+
+
+## Como entregar
+- Cree una rama independiente `feat/nombre-apellido`
+- Cree un PR contra la rama de `main`
+- Añada detalles adecuados al PR. 
+  - Tenga en cuenta que un buen PR es consiso y ayuda al revisador a entender los cambios siendo introducidos mediante una descripcion escrita. 
+  - Tambien debe mostrar prueba que los cambios introducidos funcionan, por ejemplo una captura de screen o Unittest o Integration test, o una combinacion de esos
+- Si usted determina que es mucho codigo y el PR seria muy grande, tiene la opcion de crear multiples PRs (multiples ramas una encima de la otra) para mantener la legiblodad de cada uno.
+
+
+Cualquier pregunta, email a dev.eriel.mf@gmail.com o mensaje por Telegram. 
