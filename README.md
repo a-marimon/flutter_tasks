@@ -50,3 +50,4 @@ El objetivo principal es expandir la aplicacion basica de Flutter para que muest
 
 
 Cualquier pregunta, email a dev.eriel.mf@gmail.com o mensaje por Telegram. 
+No hay limite de tiempo, pero tenga en cuenta que tenemos mas de 10 aplicantes para 2 posiciones, y notificaremos a todos cuando se halla tomado la decision. Igual en el futuro tendremos mas projectos y nos interesaria agrandar el equipo, asi que por favor mantenganse en contacto aunque no sea elegido en este momento. Gracias!
