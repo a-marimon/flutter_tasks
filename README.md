@@ -34,9 +34,9 @@ El objetivo principal es expandir la aplicacion basica de Flutter para que muest
   - Valor nuevo
 - La grafica y la lista deben compartir la misma pantalla
 
-### (Extra, Opcional) 4. Usar GoRouter para la navegacion
-### (Extra, Opcional) 5. Guardar informacion en una base de datos externa (Firebase, PgSQL, etc)
-### (Extra, Opcional) 6. Permitir multiples usuarios
+### 4. (Extra, Opcional)  Usar GoRouter para la navegacion
+### 5. (Extra, Opcional)  Guardar informacion en una base de datos externa (Firebase, PgSQL, etc)
+### 6. (Extra, Opcional)  Permitir multiples usuarios
 - En este caso no es necesario un Login, simplemente reconozca cada usuario por un ID unico del aparato que use
 
 
