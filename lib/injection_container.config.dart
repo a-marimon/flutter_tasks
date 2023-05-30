@@ -15,15 +15,16 @@ import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 import 'package:shared_preferences/shared_preferences.dart' as _i5;
 
-import 'register_module.dart' as _i14;
-import 'src/core/preferences/preferences.dart' as _i11;
+import 'register_module.dart' as _i15;
+import 'src/core/preferences/preferences.dart' as _i12;
+import 'src/data/datasource/counter_data_source.dart' as _i9;
 import 'src/data/datasource/user_data_source.dart' as _i6;
-import 'src/data/repositories/counter_repository_impl.dart' as _i10;
+import 'src/data/repositories/counter_repository_impl.dart' as _i11;
 import 'src/data/repositories/user_repository_impl.dart' as _i8;
-import 'src/domain/repositories/counter_repository.dart' as _i9;
+import 'src/domain/repositories/counter_repository.dart' as _i10;
 import 'src/domain/repositories/user_repository.dart' as _i7;
-import 'src/presentation/bloc/counter_a/counter_a_cubit.dart' as _i12;
-import 'src/presentation/bloc/counter_b/counter_b_cubit.dart' as _i13;
+import 'src/presentation/bloc/counter_a/counter_a_cubit.dart' as _i13;
+import 'src/presentation/bloc/counter_b/counter_b_cubit.dart' as _i14;
 
 // ignore_for_file: unnecessary_lambdas
 // ignore_for_file: lines_longer_than_80_chars
@@ -52,18 +53,20 @@ Future<_i1.GetIt> $initGetIt(
       () => _i6.UserDataSourceImpl(gh<_i4.FirebaseFirestore>()));
   gh.factory<_i7.UserRepository>(
       () => _i8.UserRepositoryImpl(gh<_i6.UserDataSource>()));
-  gh.factory<_i9.CounterRepository>(
-      () => _i10.CounterRepositoryImpl(gh<_i4.FirebaseFirestore>()));
-  gh.factory<_i11.Preferences>(() => _i11.Preferences(
+  gh.factory<_i9.CounterDataSource>(
+      () => _i9.CounterDtaSourceImpl(gh<_i4.FirebaseFirestore>()));
+  gh.factory<_i10.CounterRepository>(
+      () => _i11.CounterRepositoryImpl(gh<_i4.FirebaseFirestore>()));
+  gh.factory<_i12.Preferences>(() => _i12.Preferences(
         gh<_i3.BaseDeviceInfo>(),
         gh<_i5.SharedPreferences>(),
         gh<_i7.UserRepository>(),
       ));
-  gh.factory<_i12.CounterACubit>(
-      () => _i12.CounterACubit(gh<_i9.CounterRepository>()));
-  gh.factory<_i13.CounterBCubit>(
-      () => _i13.CounterBCubit(gh<_i9.CounterRepository>()));
+  gh.factory<_i13.CounterACubit>(
+      () => _i13.CounterACubit(gh<_i10.CounterRepository>()));
+  gh.factory<_i14.CounterBCubit>(
+      () => _i14.CounterBCubit(gh<_i10.CounterRepository>()));
   return getIt;
 }
 
-class _$RegisterModule extends _i14.RegisterModule {}
+class _$RegisterModule extends _i15.RegisterModule {}

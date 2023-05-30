@@ -26,4 +26,18 @@ class CounterModel {
       if (value != null) "value": value,
     };
   }
+
+  factory CounterModel.fromMap(Map<String, dynamic> map) {
+    return CounterModel(
+      name: map['name'],
+      value: map['value'],
+    );
+  }
+
+  Map<String, double> toMap() {
+    return {
+      if (name != null)
+        "Contador ${name!.toUpperCase()}": (value ?? 0).toDouble(),
+    };
+  }
 }
