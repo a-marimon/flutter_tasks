@@ -31,13 +31,13 @@ class CounterAView extends StatelessWidget {
         title: const Text('Contador A'),
       ),
       floatingActionButton: FloatingActions(
-              onIncrement: () {
-                context.read<CounterACubit>().increment();
-              },
-              onDecrement: () {
-                context.read<CounterACubit>().decrement();
-              },
-            ),
+        onIncrement: () {
+          context.read<CounterACubit>().increment();
+        },
+        onDecrement: () {
+          context.read<CounterACubit>().decrement();
+        },
+      ),
       body: Center(
         child: BlocBuilder<CounterACubit, CounterAState>(
           builder: (context, state) {
