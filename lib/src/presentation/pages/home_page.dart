@@ -17,19 +17,14 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       drawer: const AppDrawer(),
       appBar: AppBar(),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: const [
-            CounterPieChart(),
-            SizedBox(
-              width: double.maxFinite,
-              height: 40.0,
-            ),
-            Events()
-          ],
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: const [
+          CounterPieChart(),
+          Flexible(
+            child: Events(),
+          )
+        ],
       ),
     );
   }
@@ -68,8 +63,9 @@ class _EventsState extends State<Events> {
         if (data.size > 0) {
           return ListView.builder(
             shrinkWrap: true,
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             itemCount: data.size,
-            physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               final document = data.docs.reversed.toList()[index];
               final event = EventModel.fromMap(document.data());
