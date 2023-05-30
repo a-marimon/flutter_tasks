@@ -1,51 +1,36 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
-import 'package:my_tasks/injection_container.dart';
-import 'package:my_tasks/src/core/preferences/preferences.dart';
+import 'package:my_tasks/src/data/datasource/counter_data_source.dart';
 import 'package:my_tasks/src/domain/models/counter_model.dart';
 
+import '../../domain/models/event_model.dart';
 import '../../domain/repositories/counter_repository.dart';
 
 @Injectable(as: CounterRepository)
 class CounterRepositoryImpl implements CounterRepository {
-  final FirebaseFirestore db;
-  CounterRepositoryImpl(this.db);
+  final CounterDataSource dataSource;
+
+  CounterRepositoryImpl(this.dataSource);
 
   @override
   Future<void> decrement(CounterModel counter) async {
-    final id = getIt<Preferences>().deviceId;
+    final event = EventModel(
+      name: counter.name,
+      time: DateTime.now(),
+      value: counter.value,
+      action: Actions.resta.name,
+    );
 
-    final counterRef = db
-        .collection('User')
-        .doc(id)
-        .collection('Counter')
-        .withConverter(
-          fromFirestore: CounterModel.fromFirestore,
-          toFirestore: (CounterModel counter, options) => counter.toFirestore(),
-        )
-        .doc(counter.name);
-
-    await counterRef.update(
-      {'value': counter.value},
+    await Future.wait(
+      [
+        dataSource.decrement(counter),
+        dataSource.setEvent(event),
+      ],
     );
   }
 
   @override
   Future<int> getValue(String name) async {
-    final id = getIt<Preferences>().deviceId;
-
-    final ref = db
-        .collection('User')
-        .doc(id)
-        .collection('Counter')
-        .withConverter(
-          fromFirestore: CounterModel.fromFirestore,
-          toFirestore: (CounterModel counter, _) => counter.toFirestore(),
-        )
-        .doc(name);
-
-    final docSnap = await ref.get();
-    final counter = docSnap.data();
+    final counter = await dataSource.getValue(name);
 
     if (counter != null) {
       return counter.value!;
@@ -56,20 +41,18 @@ class CounterRepositoryImpl implements CounterRepository {
 
   @override
   Future<void> increment(CounterModel counter) async {
-    final id = getIt<Preferences>().deviceId;
+    final event = EventModel(
+      name: counter.name,
+      time: DateTime.now(),
+      value: counter.value,
+      action: Actions.suma.name,
+    );
 
-    final counterRef = db
-        .collection('User')
-        .doc(id)
-        .collection('Counter')
-        .withConverter(
-          fromFirestore: CounterModel.fromFirestore,
-          toFirestore: (CounterModel counter, options) => counter.toFirestore(),
-        )
-        .doc(counter.name);
-
-    await counterRef.update(
-      {'value': FieldValue.increment(1)},
+    await Future.wait(
+      [
+        dataSource.increment(counter),
+        dataSource.setEvent(event),
+      ],
     );
   }
 }

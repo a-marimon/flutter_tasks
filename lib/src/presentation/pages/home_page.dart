@@ -2,8 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:my_tasks/injection_container.dart';
 import 'package:my_tasks/src/data/datasource/counter_data_source.dart';
-import 'package:my_tasks/src/data/datasource/user_data_source.dart';
 import 'package:my_tasks/src/domain/models/counter_model.dart';
+import 'package:my_tasks/src/domain/models/event_model.dart';
+import 'package:my_tasks/src/presentation/pages/widgets/event_widget.dart';
 
 import 'package:pie_chart/pie_chart.dart';
 import 'package:my_tasks/src/core/router/drawer.dart';
@@ -19,9 +20,65 @@ class HomePage extends StatelessWidget {
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Column(
-          children: [CounterPieChart()],
+          children: const [
+            CounterPieChart(),
+            SizedBox(
+              height: 40.0,
+            ),
+            Events()
+          ],
         ),
       ),
+    );
+  }
+}
+
+class Events extends StatefulWidget {
+  const Events({super.key});
+
+  @override
+  State<Events> createState() => _EventsState();
+}
+
+class _EventsState extends State<Events> {
+  late CounterDataSource dataSource;
+
+  @override
+  void initState() {
+    dataSource = getIt<CounterDataSource>();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+      stream: dataSource.getEvents(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        }
+        if (snapshot.hasError) {
+          return const Text('Error al obtener los datos de Firebase');
+        }
+
+        final data = snapshot.data!;
+
+        if (data.size > 0) {
+          return ListView.builder(
+            shrinkWrap: true,
+            itemCount: data.size,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              final document = data.docs[index];
+              final event = EventModel.fromMap(document.data());
+
+              return EventWidget(event: event);
+            },
+          );
+        } else {
+          return const Text('No hay eventos');
+        }
+      },
     );
   }
 }
