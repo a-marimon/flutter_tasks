@@ -55,8 +55,10 @@ Future<_i1.GetIt> $initGetIt(
       () => _i8.UserRepositoryImpl(gh<_i6.UserDataSource>()));
   gh.factory<_i9.CounterDataSource>(
       () => _i9.CounterDtaSourceImpl(gh<_i4.FirebaseFirestore>()));
-  gh.factory<_i10.CounterRepository>(
-      () => _i11.CounterRepositoryImpl(gh<_i9.CounterDataSource>()));
+  gh.factory<_i10.CounterRepository>(() => _i11.CounterRepositoryImpl(
+        gh<_i9.CounterDataSource>(),
+        gh<_i6.UserDataSource>(),
+      ));
   gh.factory<_i12.Preferences>(() => _i12.Preferences(
         gh<_i3.BaseDeviceInfo>(),
         gh<_i5.SharedPreferences>(),

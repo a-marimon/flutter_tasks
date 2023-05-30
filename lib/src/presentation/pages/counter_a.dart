@@ -30,12 +30,19 @@ class CounterAView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Contador A'),
       ),
-      floatingActionButton: FloatingActions(
-        onIncrement: () {
-          context.read<CounterACubit>().increment();
-        },
-        onDecrement: () {
-          context.read<CounterACubit>().decrement();
+      floatingActionButton: BlocBuilder<CounterACubit, CounterAState>(
+        builder: (context, state) {
+          if (state is CounterALoaded) {
+            return FloatingActions(
+              onIncrement: () {
+                context.read<CounterACubit>().increment();
+              },
+              onDecrement: () {
+                context.read<CounterACubit>().decrement();
+              },
+            );
+          }
+          return const SizedBox.shrink();
         },
       ),
       body: Center(
@@ -43,6 +50,24 @@ class CounterAView extends StatelessWidget {
           builder: (context, state) {
             if (state is CounterALoading) {
               return const CircularProgressIndicator();
+            }
+            if (state is CounterAError) {
+              return Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(state.error!.message),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.read<CounterACubit>().getValue();
+                    },
+                    child: const Text('Reintentar'),
+                  ),
+                ],
+              );
             }
             return Text(
               '${state.value}',

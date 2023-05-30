@@ -29,12 +29,19 @@ class CounterBView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Contador B'),
       ),
-      floatingActionButton: FloatingActions(
-        onIncrement: () {
-          context.read<CounterBCubit>().increment();
-        },
-        onDecrement: () {
-          context.read<CounterBCubit>().decrement();
+      floatingActionButton: BlocBuilder<CounterBCubit, CounterBState>(
+        builder: (context, state) {
+          if (state is CounterBLoaded) {
+            return FloatingActions(
+              onIncrement: () {
+                context.read<CounterBCubit>().increment();
+              },
+              onDecrement: () {
+                context.read<CounterBCubit>().decrement();
+              },
+            );
+          }
+          return const SizedBox.shrink();
         },
       ),
       body: Center(
@@ -42,6 +49,24 @@ class CounterBView extends StatelessWidget {
           builder: (context, state) {
             if (state is CounterBLoading) {
               return const CircularProgressIndicator();
+            }
+            if (state is CounterBError) {
+              return Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(state.error!.message),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.read<CounterBCubit>().getValue();
+                    },
+                    child: const Text('Reintentar'),
+                  ),
+                ],
+              );
             }
             return Text(
               '${state.value}',

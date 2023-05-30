@@ -20,9 +20,11 @@ class HomePage extends StatelessWidget {
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: const [
             CounterPieChart(),
             SizedBox(
+              width: double.maxFinite,
               height: 40.0,
             ),
             Events()
@@ -69,7 +71,7 @@ class _EventsState extends State<Events> {
             itemCount: data.size,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
-              final document = data.docs[index];
+              final document = data.docs.reversed.toList()[index];
               final event = EventModel.fromMap(document.data());
 
               return EventWidget(event: event);
@@ -113,13 +115,21 @@ class _CounterPieChartState extends State<CounterPieChart> {
           return const Text('Error al obtener los datos de Firebase');
         }
 
-        final data = snapshot.data!.docs
-            .map((e) => CounterModel.fromMap(e.data()))
-            .toList();
-
         Map<String, double> map = {};
-        for (var element in data) {
-          map.addAll(element.toMap());
+
+        if (snapshot.data!.docs.isNotEmpty) {
+          final list = snapshot.data!.docs
+              .map((e) => CounterModel.fromMap(e.data()))
+              .toList();
+
+          for (var element in list) {
+            map.addAll(element.toMap());
+          }
+        } else {
+          map = {
+            'Contador A': 0,
+            'Contador B': 0,
+          };
         }
 
         return PieChart(

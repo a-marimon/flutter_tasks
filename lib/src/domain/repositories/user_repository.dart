@@ -1,3 +1,6 @@
+import 'package:dartz/dartz.dart';
+import 'package:my_tasks/src/core/exception/exception.dart';
+
 abstract class UserRepository {
-  Future<void> createUser(String id);
+  Future<Either<Failure,void>> createUser(String id);
 }

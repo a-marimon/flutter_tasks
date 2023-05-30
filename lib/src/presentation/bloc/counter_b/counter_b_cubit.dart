@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:my_tasks/src/core/exception/exception.dart';
 
 import '../../../domain/models/counter_model.dart';
 import '../../../domain/repositories/counter_repository.dart';
@@ -14,18 +15,25 @@ class CounterBCubit extends Cubit<CounterBState> {
   CounterBCubit(this.counterRepository) : super(const CounterBInitial(0));
 
   void increment() {
-    emit(CounterBInitial(state.value + 1));
+    emit(CounterBLoaded(state.value + 1));
     counterRepository.increment(CounterModel(name: 'b', value: state.value));
   }
 
   Future<void> getValue() async {
     emit(const CounterBLoading(0));
-    final value = await counterRepository.getValue('b');
-    emit(CounterBInitial(value));
+
+    final response = await counterRepository.getValue('b');
+
+    response.fold(
+      (error) => emit(CounterBError(0, error)),
+      (value) => emit(CounterBLoaded(value)),
+    );
   }
 
   void decrement() {
-    emit(CounterBInitial(state.value - 1));
-    counterRepository.decrement(CounterModel(name: 'b', value: state.value));
+    if (state.value > 0) {
+      emit(CounterBLoaded(state.value - 1));
+      counterRepository.decrement(CounterModel(name: 'b', value: state.value));
+    }
   }
 }
