@@ -29,19 +29,12 @@ class CounterBView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Contador B'),
       ),
-      floatingActionButton: BlocBuilder<CounterBCubit, CounterBState>(
-        builder: (context, state) {
-          if (state is CounterBLoaded) {
-            return FloatingActions(
-              onIncrement: () {
-                context.read<CounterBCubit>().increment();
-              },
-              onDecrement: () {
-                context.read<CounterBCubit>().decrement();
-              },
-            );
-          }
-          return const SizedBox.shrink();
+      floatingActionButton: FloatingActions(
+        onIncrement: () {
+          context.read<CounterBCubit>().increment();
+        },
+        onDecrement: () {
+          context.read<CounterBCubit>().decrement();
         },
       ),
       body: Center(

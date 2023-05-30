@@ -30,21 +30,14 @@ class CounterAView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Contador A'),
       ),
-      floatingActionButton: BlocBuilder<CounterACubit, CounterAState>(
-        builder: (context, state) {
-          if (state is CounterALoaded) {
-            return FloatingActions(
+      floatingActionButton: FloatingActions(
               onIncrement: () {
                 context.read<CounterACubit>().increment();
               },
               onDecrement: () {
                 context.read<CounterACubit>().decrement();
               },
-            );
-          }
-          return const SizedBox.shrink();
-        },
-      ),
+            ),
       body: Center(
         child: BlocBuilder<CounterACubit, CounterAState>(
           builder: (context, state) {

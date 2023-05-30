@@ -13,9 +13,16 @@ class CounterACubit extends Cubit<CounterAState> {
 
   CounterACubit(this.counterRepository) : super(const CounterALoaded(0));
 
-  void increment() {
-    emit(CounterALoaded(state.value + 1));
-    counterRepository.increment(CounterModel(name: 'a', value: state.value));
+  Future<void> increment() async {
+    emit(const CounterALoading(0));
+
+    final response = await counterRepository
+        .increment(CounterModel(name: 'a', value: state.value));
+
+    response.fold(
+      (error) => emit(CounterAError(0, error)),
+      (value) => emit(CounterALoaded(state.value + 1)),
+    );
   }
 
   Future<void> getValue() async {
@@ -29,10 +36,17 @@ class CounterACubit extends Cubit<CounterAState> {
     );
   }
 
-  void decrement() {
+  Future<void> decrement() async {
+    emit(const CounterALoading(0));
+
     if (state.value > 0) {
-      emit(CounterALoaded(state.value - 1));
-      counterRepository.decrement(CounterModel(name: 'a', value: state.value));
+      final response = await counterRepository
+          .decrement(CounterModel(name: 'a', value: state.value));
+
+      response.fold(
+        (error) => emit(CounterAError(0, error)),
+        (value) => emit(CounterALoaded(state.value - 1)),
+      );
     }
   }
 }
