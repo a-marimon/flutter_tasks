@@ -1,6 +1,16 @@
 part of 'counter_b_cubit.dart';
 
 @immutable
-abstract class CounterBState {}
+abstract class CounterBState {
+  final int value;
 
-class CounterBInitial extends CounterBState {}
+  const CounterBState(this.value);
+}
+
+class CounterBInitial extends CounterBState {
+  const CounterBInitial(super.value);
+}
+
+class CounterBLoading extends CounterBState {
+  const CounterBLoading(super.value);
+}

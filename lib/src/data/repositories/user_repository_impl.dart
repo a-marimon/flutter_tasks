@@ -10,6 +10,10 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<void> createUser(String id) async {
-    await userDataSource.createuser(id);
+    final bool userExist = await userDataSource.userExist(id);
+
+    if (!userExist) {
+      await userDataSource.createCollections(id);
+    }
   }
 }

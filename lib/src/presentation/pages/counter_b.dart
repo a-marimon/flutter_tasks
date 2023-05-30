@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_tasks/injection_container.dart';
 import 'package:my_tasks/src/core/theme/theme_context.dart';
 import 'package:my_tasks/src/presentation/pages/widgets/floating_actions.dart';
 
@@ -11,7 +12,7 @@ class CounterB extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => CounterBCubit(),
+      create: (context) => getIt<CounterBCubit>()..getValue(),
       child: const CounterBView(),
     );
   }
@@ -37,10 +38,13 @@ class CounterBView extends StatelessWidget {
         },
       ),
       body: Center(
-        child: BlocBuilder<CounterBCubit, int>(
+        child: BlocBuilder<CounterBCubit, CounterBState>(
           builder: (context, state) {
+            if (state is CounterBLoading) {
+              return const CircularProgressIndicator();
+            }
             return Text(
-              '$state',
+              '${state.value}',
               style: context.theme.textTheme.displayMedium,
             );
           },
