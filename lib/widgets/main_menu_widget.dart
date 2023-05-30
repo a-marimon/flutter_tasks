@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '../screens/screens.dart';
 
 class MainMenuWidget extends StatelessWidget {
   const MainMenuWidget({super.key});
@@ -7,7 +10,7 @@ class MainMenuWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        margin: EdgeInsets.zero,
+        margin: const EdgeInsets.only(top: 40),
         child: Column(
           children: [
             Expanded(
@@ -15,12 +18,17 @@ class MainMenuWidget extends StatelessWidget {
               children: [
                 ListTile(
                   title: const Text('Contador A'),
-                  onTap: () {},
+                  onTap: () => context.push('/${CounterAScreen.routeName}'),
                 ),
                 const Divider(),
                 ListTile(
                   title: const Text('Contador B'),
-                  onTap: () {},
+                  onTap: () => context.push('/${CounterBScreen.routeName}'),
+                ),
+                const Divider(),
+                ListTile(
+                  title: const Text('Estadísticas'),
+                  onTap: () => context.push('/${StatisticsScreen.routeName}'),
                 ),
               ],
             )),
