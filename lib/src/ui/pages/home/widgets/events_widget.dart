@@ -17,7 +17,7 @@ class _EventsWidgetState extends State<EventsWidget> {
     final response = await supabase
         .from('eventos')
         .select('''
-    nombre_contador, created_at, valor
+    nombre_contador, created_at, valor, accion
   ''')
         .eq('device_id', deviceDetails.deviceId)
         .order('id', ascending: false)
@@ -50,13 +50,14 @@ class _EventsWidgetState extends State<EventsWidget> {
                   DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
               return Card(
                 child: ListTile(
+                  leading: Text(event['nombre_contador']),
                   trailing: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(formattedDateTime),
                     ],
                   ),
-                  title: Text(event['nombre_contador'],
+                  title: Text(event['accion'],
                       textAlign: TextAlign.center),
                   subtitle:
                       Text('${event['valor']}', textAlign: TextAlign.center),

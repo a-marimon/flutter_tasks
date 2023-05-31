@@ -17,7 +17,7 @@ class CounterBloc {
   Stream<CounterData> get counterStream => _counterStreamController.stream;
 
   Future<bool> incrementCounter() async {
-    if(await _sendServerEvent('Suma')){
+    if(await _sendServerEvent('Suma', counter + 1)){
       counter++;
       _saveCounterToStorage();
       _counterStreamController.sink.add(CounterData(counterName, counter));
@@ -27,7 +27,7 @@ class CounterBloc {
   }
 
   Future<bool> decrementCounter() async {
-    if(await _sendServerEvent('Resta')){
+    if(await _sendServerEvent('Resta', counter - 1)){
       counter--;
       _saveCounterToStorage();
       _counterStreamController.sink.add(CounterData(counterName, counter));
@@ -54,23 +54,21 @@ class CounterBloc {
     }
   }
 
-  Future<bool> _sendServerEvent(evento) async {
+  Future<bool> _sendServerEvent(evento, count) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try{
-      var response = await supabase.from('eventos').insert([
+      await supabase.from('eventos').insert([
         {
           'nombre_contador': counterName,
           'accion': evento,
-          'valor': counter,
+          'created_at': DateTime.now().toString(),
+          'valor': count,
           'device_id': prefs.getString('ID'),
         },
-      ]).select().onError((error, stackTrace) => throw error!);
-      if(response == null || response.hashCode != 200){
-        return false;
-      }else{
-        return true;
-      }
+      ]).select().onError((error, stackTrace) => print(error!.toString()));
+      return true;
     }catch(e){
+      print(e.toString());
       return false;
     }
   }
