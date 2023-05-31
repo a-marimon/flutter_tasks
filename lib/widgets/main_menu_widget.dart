@@ -28,7 +28,7 @@ class MainMenuWidget extends StatelessWidget {
                 const Divider(),
                 ListTile(
                   title: const Text('Estadísticas'),
-                  onTap: () => context.push('/${StatisticsScreen.routeName}'),
+                  onTap: () => context.push('/'),
                 ),
               ],
             )),

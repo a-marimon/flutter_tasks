@@ -27,9 +27,10 @@ class MainScaffoldWidget extends StatelessWidget {
         centerTitle: true,
       ),
       body: SafeArea(
-          child: SizedBox(
+          child: Container(
         height: size.height,
         width: size.width,
+        padding: const EdgeInsets.only(right: 20, left: 20),
         child: child,
       )),
       floatingActionButton: floatingActionButton,
