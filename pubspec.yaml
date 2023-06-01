@@ -48,6 +48,9 @@ dependencies:
   # Database
   supabase_flutter: ^1.10.1
 
+  # Internationalization
+  intl: ^0.17.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

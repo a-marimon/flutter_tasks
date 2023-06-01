@@ -5,6 +5,8 @@ abstract class CounterEvent {}
 
 class InitData extends CounterEvent {}
 
+class ListCounterA extends CounterEvent {}
+
 class CounterAddA extends CounterEvent {}
 
 class CounterDecrementA extends CounterEvent {}

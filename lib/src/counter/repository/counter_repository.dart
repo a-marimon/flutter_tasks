@@ -14,10 +14,31 @@ class CounterRepository {
         "counterB": null
       };
 
-      counterResponse['counterA'] = await selectCurrentCounter(CounterEnum.counterA);
+      counterResponse['counterA'] =
+          await selectCurrentCounter(CounterEnum.counterA);
+      counterResponse['listCounterA'] =
+          await selectPreviousCounters(CounterEnum.counterA);
       // counterResponse['counterB'] = await selectCurrentCounter(CounterEnum.counterB);
 
       return counterResponse;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<List<CounterDto>?> getListCounter(CounterEnum counterEnum) async {
+    try {
+      final values = await supabase.client
+          .from(counterEnum == CounterEnum.counterA ? 'counter_a' : 'counter_b')
+          .select('*')
+          .order('id', ascending: true);
+
+      List<CounterDto> listCounters = [];
+
+      for (var value in values) {
+        listCounters.add(CounterDto.fromJson(value));
+      }
+      return listCounters;
     } catch (e) {
       return null;
     }
@@ -37,7 +58,7 @@ class CounterRepository {
     final values = await supabase.client
         .from(counterEnum == CounterEnum.counterA ? 'counter_a' : 'counter_b')
         .select('*')
-        .match({'current': 'false'});
+        .match({'current': 'false'}).order('id', ascending: true);
 
     List<CounterDto> listCounters = [];
 

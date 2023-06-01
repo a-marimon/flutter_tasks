@@ -14,6 +14,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
     on<CounterDecrementA>(_decrementCounterA);
     on<CounterAddB>(_addCounterB);
     on<CounterDecrementB>(_decrementCounterB);
+    on<ListCounterA>(_getListCounter);
   }
 
   final CounterRepository counterRepository;
@@ -24,8 +25,23 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
     Map<String, dynamic>? counterResponse = await counterRepository.initData();
     if (counterResponse != null) {
       emit(state.copyWith(
+        counterStatus: CounterStatus.success,
+        currentCounterA: counterResponse['counterA'],
+      ));
+    } else {
+      emit(state.copyWith(counterStatus: CounterStatus.error));
+    }
+  }
+
+  void _getListCounter(ListCounterA event, Emitter<CounterState> emit) async {
+    emit(state.copyWith(counterStatus: CounterStatus.loading));
+
+    List<CounterDto>? counterResponse =
+        await counterRepository.getListCounter(CounterEnum.counterA);
+    if (counterResponse != null) {
+      emit(state.copyWith(
           counterStatus: CounterStatus.success,
-          currentCounterA: counterResponse['counterA']));
+          listCountersA: counterResponse));
     } else {
       emit(state.copyWith(counterStatus: CounterStatus.error));
     }
