@@ -32,9 +32,21 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
     }
   }
 
-  void _decrementCounterA(CounterDecrementA event, Emitter<CounterState> emit) {
-    if (state.valueA != 0) {
-      emit(state.copyWith(valueA: state.valueA! - 1));
+  void _decrementCounterA(
+      CounterDecrementA event, Emitter<CounterState> emit) async {
+    if (state.currentCounterA!.value != 0) {
+      emit(state.copyWith(counterStatus: CounterStatus.loading));
+
+      Map<String, dynamic>? counterResponse =
+          await counterRepository.decrementCounter(CounterEnum.counterA);
+      if (counterResponse != null) {
+        emit(state.copyWith(
+            valueA: state.valueA! - 1,
+            counterStatus: CounterStatus.success,
+            currentCounterA: counterResponse['currentCounter']));
+      } else {
+        emit(state.copyWith(counterStatus: CounterStatus.error));
+      }
     }
   }
 

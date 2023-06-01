@@ -41,16 +41,45 @@ class CounterRepository {
     };
     try {
       final currentCounterValue = await selectCounter(counterEnum);
-      await supabase.client
+      final newValue = await supabase.client
           .from(counterEnum == CounterEnum.counterA ? 'counter_a' : 'counter_b')
           .insert(
-              {'value': currentCounterValue.value! + 1, 'operation': 'suma'});
+              {'value': currentCounterValue.value! + 1, 'operation': 'suma'})
+          .select()
+          .single();
 
       await updateCounter(currentCounterValue.id!);
       final previousCounters = await selectPreviousCounters(counterEnum);
 
       counterResponse['listCounter'] = previousCounters;
-      counterResponse['currentCounter'] = currentCounterValue;
+      counterResponse['currentCounter'] = CounterDto.fromJson(newValue);
+      return counterResponse;
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  Future<Map<String, dynamic>?> decrementCounter(
+      CounterEnum counterEnum) async {
+    //* Se declara esta variable para devolver al bloc el listado y el valor actual del contador
+    final Map<String, dynamic> counterResponse = {
+      "listCounter": null,
+      "currentCounter": null
+    };
+    try {
+      final counterValue = await selectCounter(counterEnum);
+      final newValue = await supabase.client
+          .from(counterEnum == CounterEnum.counterA ? 'counter_a' : 'counter_b')
+          .insert({'value': counterValue.value! - 1, 'operation': 'resta'})
+          .select()
+          .single();
+
+      await updateCounter(counterValue.id!);
+      final previousCounters = await selectPreviousCounters(counterEnum);
+
+      counterResponse['listCounter'] = previousCounters;
+      counterResponse['currentCounter'] = CounterDto.fromJson(newValue);
       return counterResponse;
     } catch (e) {
       print(e.toString());
