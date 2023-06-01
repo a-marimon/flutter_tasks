@@ -1,0 +1,50 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:my_tasks/src/counter/bloc/counter_bloc.dart';
+import 'package:my_tasks/src/counter/widgets/counter_section.dart';
+import 'package:my_tasks/src/counter/widgets/navigation_section.dart';
+import 'package:my_tasks/src/routes/app_router.dart';
+
+class Page1 extends StatelessWidget {
+  const Page1({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: BlocBuilder<CounterBloc, CounterState>(
+        builder: (context, state) {
+          return SizedBox(
+            width: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //* Navigation Section
+                NavigationSection(
+                  title: 'Contador A',
+                  text: 'Ir al contador B',
+                  onPressed: () {
+                    context.pushNamed(AppRouter.page2.name);
+                  },
+                ),
+
+                const SizedBox.square(dimension: 10),
+
+                //*Counter Section
+                CounterSection(
+                  value: state.valueA!,
+                  onPressedAdd: () {
+                    context.read<CounterBloc>().add(CounterAddA());
+                  },
+                  onPressedDecrement: () {
+                    context.read<CounterBloc>().add(CounterDecrementA());
+                  },
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}

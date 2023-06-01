@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
-import 'package:my_tasks/src/views/page1.dart';
-import 'package:my_tasks/src/views/page2.dart';
+import 'package:my_tasks/src/counter/views/page1.dart';
+import 'package:my_tasks/src/counter/views/page2.dart';
 
 enum AppRouter { page1, page2 }
 
