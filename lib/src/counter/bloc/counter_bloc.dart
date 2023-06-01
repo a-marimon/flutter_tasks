@@ -9,6 +9,7 @@ part 'counter_state.dart';
 
 class CounterBloc extends Bloc<CounterEvent, CounterState> {
   CounterBloc(this.counterRepository) : super(CounterState.initial()) {
+    on<InitData>(_initData);
     on<CounterAddA>(_addCounterA);
     on<CounterDecrementA>(_decrementCounterA);
     on<CounterAddB>(_addCounterB);
@@ -16,6 +17,19 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
   }
 
   final CounterRepository counterRepository;
+
+  void _initData(InitData event, Emitter<CounterState> emit) async {
+    emit(state.copyWith(counterStatus: CounterStatus.loading));
+
+    Map<String, dynamic>? counterResponse = await counterRepository.initData();
+    if (counterResponse != null) {
+      emit(state.copyWith(
+          counterStatus: CounterStatus.success,
+          currentCounterA: counterResponse['counterA']));
+    } else {
+      emit(state.copyWith(counterStatus: CounterStatus.error));
+    }
+  }
 
   void _addCounterA(CounterAddA event, Emitter<CounterState> emit) async {
     emit(state.copyWith(counterStatus: CounterStatus.loading));

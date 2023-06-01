@@ -6,8 +6,19 @@ import 'package:my_tasks/src/counter/widgets/counter_section.dart';
 import 'package:my_tasks/src/counter/widgets/navigation_section.dart';
 import 'package:my_tasks/src/routes/app_router.dart';
 
-class Page1 extends StatelessWidget {
+class Page1 extends StatefulWidget {
   const Page1({super.key});
+
+  @override
+  State<Page1> createState() => _Page1State();
+}
+
+class _Page1State extends State<Page1> {
+  @override
+  void initState() {
+    context.read<CounterBloc>().add(InitData());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

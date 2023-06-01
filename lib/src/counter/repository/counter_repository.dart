@@ -6,16 +6,30 @@ class CounterRepository {
   final Supabase supabase;
   const CounterRepository(this.supabase);
 
-  Future<CounterDto> selectCounter(CounterEnum counterEnum) async {
-    late CounterDto counter;
-    final value = await supabase.client
+  Future<Map<String, dynamic>?> initData() async {
+    try {
+      //* Se declara esta variable para devolver al bloc el listado y el valor actual del contador
+      final Map<String, dynamic> counterResponse = {
+        "counterA": null,
+        "counterB": null
+      };
+
+      counterResponse['counterA'] = await selectCurrentCounter(CounterEnum.counterA);
+      // counterResponse['counterB'] = await selectCurrentCounter(CounterEnum.counterB);
+
+      return counterResponse;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<CounterDto> selectCurrentCounter(CounterEnum counterEnum) async {
+    final counter = await supabase.client
         .from(counterEnum == CounterEnum.counterA ? 'counter_a' : 'counter_b')
         .select('*')
         .match({'current': 'true'}).single();
 
-    counter = CounterDto.fromJson(value);
-
-    return counter;
+    return CounterDto.fromJson(counter);
   }
 
   Future<List<CounterDto>> selectPreviousCounters(
@@ -40,7 +54,7 @@ class CounterRepository {
       "currentCounter": null
     };
     try {
-      final currentCounterValue = await selectCounter(counterEnum);
+      final currentCounterValue = await selectCurrentCounter(counterEnum);
       final newValue = await supabase.client
           .from(counterEnum == CounterEnum.counterA ? 'counter_a' : 'counter_b')
           .insert(
@@ -68,7 +82,7 @@ class CounterRepository {
       "currentCounter": null
     };
     try {
-      final counterValue = await selectCounter(counterEnum);
+      final counterValue = await selectCurrentCounter(counterEnum);
       final newValue = await supabase.client
           .from(counterEnum == CounterEnum.counterA ? 'counter_a' : 'counter_b')
           .insert({'value': counterValue.value! - 1, 'operation': 'resta'})
