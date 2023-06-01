@@ -14,35 +14,44 @@ class Page1 extends StatelessWidget {
     return Scaffold(
       body: BlocBuilder<CounterBloc, CounterState>(
         builder: (context, state) {
-          return SizedBox(
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                //* Navigation Section
-                NavigationSection(
-                  title: 'Contador A',
-                  text: 'Ir al contador B',
-                  onPressed: () {
-                    context.pushNamed(AppRouter.page2.name);
-                  },
-                ),
+          switch (state.counterStatus) {
+            case CounterStatus.loading:
+              return const Center(child: CircularProgressIndicator());
+            case CounterStatus.error:
+              return const Center(
+                child: Text('Ha ocurrido un error inesperado'),
+              );
+            default:
+              return SizedBox(
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    //* Navigation Section
+                    NavigationSection(
+                      title: 'Contador A',
+                      text: 'Ir al contador B',
+                      onPressed: () {
+                        context.pushNamed(AppRouter.page2.name);
+                      },
+                    ),
 
-                const SizedBox.square(dimension: 10),
+                    const SizedBox.square(dimension: 10),
 
-                //*Counter Section
-                CounterSection(
-                  value: state.valueA!,
-                  onPressedAdd: () {
-                    context.read<CounterBloc>().add(CounterAddA());
-                  },
-                  onPressedDecrement: () {
-                    context.read<CounterBloc>().add(CounterDecrementA());
-                  },
+                    //*Counter Section
+                    CounterSection(
+                      value: state.currentCounterA!.value!,
+                      onPressedAdd: () {
+                        context.read<CounterBloc>().add(CounterAddA());
+                      },
+                      onPressedDecrement: () {
+                        context.read<CounterBloc>().add(CounterDecrementA());
+                      },
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          );
+              );
+          }
         },
       ),
     );

@@ -1,0 +1,1 @@
+enum CounterEnum { counterA, counterB }

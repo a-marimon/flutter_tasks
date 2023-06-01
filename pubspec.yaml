@@ -45,6 +45,9 @@ dependencies:
   # Navigation
   go_router: ^7.1.1
 
+  # Database
+  supabase_flutter: ^1.10.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
