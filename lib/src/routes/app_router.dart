@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:my_tasks/src/counter/constants/counter_enum.dart';
 import 'package:my_tasks/src/counter/views/page1.dart';
 import 'package:my_tasks/src/counter/views/page2.dart';
 import 'package:my_tasks/src/counter/views/page3.dart';
@@ -19,9 +20,16 @@ final router = GoRouter(
       builder: (context, state) => const Page2(),
     ),
     GoRoute(
-      path: '/page3',
-      name: AppRouter.page3.name,
-      builder: (context, state) => const Page3(),
-    ),
+        path: '/page3:counterValue',
+        name: AppRouter.page3.name,
+        builder: (context, state) {
+          final counterEnum =
+              state.pathParameters['counterValue'] ?? 'counterA';
+          print(counterEnum.toLowerCase().compareTo('countera') == 0);
+          return Page3(
+              counterEnum: counterEnum.toLowerCase().compareTo('countera') == 0
+                  ? CounterEnum.counterA
+                  : CounterEnum.counterB);
+        }),
   ],
 );

@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:my_tasks/src/counter/const/counter_enum.dart';
+import 'package:my_tasks/src/counter/constants/counter_enum.dart';
 import 'package:my_tasks/src/counter/data/counter_dto.dart';
 import 'package:my_tasks/src/counter/repository/counter_repository.dart';
 
@@ -14,7 +14,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
     on<CounterDecrementA>(_decrementCounterA);
     on<CounterAddB>(_addCounterB);
     on<CounterDecrementB>(_decrementCounterB);
-    on<ListCounterA>(_getListCounter);
+    on<ListCounters>(_getListCounter);
   }
 
   final CounterRepository counterRepository;
@@ -27,21 +27,26 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       emit(state.copyWith(
         counterStatus: CounterStatus.success,
         currentCounterA: counterResponse['counterA'],
+        currentCounterB: counterResponse['counterB'],
+        listCountersA: counterResponse['listCounterA'],
+        listCountersB: counterResponse['listCounterB'],
       ));
     } else {
       emit(state.copyWith(counterStatus: CounterStatus.error));
     }
   }
 
-  void _getListCounter(ListCounterA event, Emitter<CounterState> emit) async {
+  void _getListCounter(ListCounters event, Emitter<CounterState> emit) async {
     emit(state.copyWith(counterStatus: CounterStatus.loading));
 
-    List<CounterDto>? counterResponse =
-        await counterRepository.getListCounter(CounterEnum.counterA);
+    Map<String, dynamic>? counterResponse =
+        await counterRepository.getListCounter();
     if (counterResponse != null) {
       emit(state.copyWith(
-          counterStatus: CounterStatus.success,
-          listCountersA: counterResponse));
+        counterStatus: CounterStatus.success,
+        listCountersA: counterResponse['listCounterA'],
+        listCountersB: counterResponse['listCounterB'],
+      ));
     } else {
       emit(state.copyWith(counterStatus: CounterStatus.error));
     }
@@ -54,7 +59,6 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
         await counterRepository.addCounter(CounterEnum.counterA);
     if (counterResponse != null) {
       emit(state.copyWith(
-          valueA: state.valueA! + 1,
           counterStatus: CounterStatus.success,
           currentCounterA: counterResponse['currentCounter']));
     } else {
@@ -71,7 +75,6 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
           await counterRepository.decrementCounter(CounterEnum.counterA);
       if (counterResponse != null) {
         emit(state.copyWith(
-            valueA: state.valueA! - 1,
             counterStatus: CounterStatus.success,
             currentCounterA: counterResponse['currentCounter']));
       } else {
@@ -80,13 +83,34 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
     }
   }
 
-  void _addCounterB(CounterAddB event, Emitter<CounterState> emit) {
-    emit(state.copyWith(valueB: state.valueB! + 1));
+  void _addCounterB(CounterAddB event, Emitter<CounterState> emit) async {
+    emit(state.copyWith(counterStatus: CounterStatus.loading));
+
+    Map<String, dynamic>? counterResponse =
+        await counterRepository.addCounter(CounterEnum.counterB);
+    if (counterResponse != null) {
+      emit(state.copyWith(
+          counterStatus: CounterStatus.success,
+          currentCounterB: counterResponse['currentCounter']));
+    } else {
+      emit(state.copyWith(counterStatus: CounterStatus.error));
+    }
   }
 
-  void _decrementCounterB(CounterDecrementB event, Emitter<CounterState> emit) {
-    if (state.valueB != 0) {
-      emit(state.copyWith(valueB: state.valueB! - 1));
+  void _decrementCounterB(
+      CounterDecrementB event, Emitter<CounterState> emit) async {
+    if (state.currentCounterB!.value != 0) {
+      emit(state.copyWith(counterStatus: CounterStatus.loading));
+
+      Map<String, dynamic>? counterResponse =
+          await counterRepository.decrementCounter(CounterEnum.counterB);
+      if (counterResponse != null) {
+        emit(state.copyWith(
+            counterStatus: CounterStatus.success,
+            currentCounterB: counterResponse['currentCounter']));
+      } else {
+        emit(state.copyWith(counterStatus: CounterStatus.error));
+      }
     }
   }
 }

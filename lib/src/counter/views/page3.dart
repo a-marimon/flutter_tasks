@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_tasks/src/counter/bloc/counter_bloc.dart';
+import 'package:my_tasks/src/counter/constants/counter_enum.dart';
 import 'package:my_tasks/src/counter/data/counter_dto.dart';
 import 'package:my_tasks/src/utils/utils.dart';
 
 class Page3 extends StatefulWidget {
-  const Page3({super.key});
+  const Page3({super.key, required this.counterEnum});
 
+  final CounterEnum counterEnum;
   @override
   State<Page3> createState() => _Page3State();
 }
@@ -14,7 +16,7 @@ class Page3 extends StatefulWidget {
 class _Page3State extends State<Page3> {
   @override
   void initState() {
-    context.read<CounterBloc>().add(ListCounterA());
+    context.read<CounterBloc>().add(ListCounters());
     super.initState();
   }
 
@@ -44,9 +46,14 @@ class _Page3State extends State<Page3> {
                     const SizedBox.square(dimension: 5),
                     Expanded(
                       child: ListView.builder(
-                          itemCount: state.listCountersA!.length,
+                          itemCount: widget.counterEnum == CounterEnum.counterA
+                              ? state.listCountersA!.length
+                              : state.listCountersB!.length,
                           itemBuilder: (context, index) {
-                            CounterDto counter = state.listCountersA![index];
+                            CounterDto counter =
+                                widget.counterEnum == CounterEnum.counterA
+                                    ? state.listCountersA![index]
+                                    : state.listCountersB![index];
                             return Padding(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 5, horizontal: 10),
@@ -66,7 +73,10 @@ class _Page3State extends State<Page3> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      const Text('A'),
+                                      Text(widget.counterEnum ==
+                                              CounterEnum.counterA
+                                          ? 'A'
+                                          : 'B'),
                                       Column(
                                         children: [
                                           Text(Utils.getDateFromTimestamp(

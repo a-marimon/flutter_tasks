@@ -62,7 +62,8 @@ class _Page1State extends State<Page1> {
 
                   ElevatedButton(
                       onPressed: () {
-                        context.pushNamed(AppRouter.page3.name);
+                        context.pushNamed(AppRouter.page3.name,
+                            pathParameters: {'counterValue': 'counterA'});
                       },
                       child: const Text('Ver estadísticas')),
                 ],

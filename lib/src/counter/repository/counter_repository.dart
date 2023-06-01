@@ -1,4 +1,4 @@
-import 'package:my_tasks/src/counter/const/counter_enum.dart';
+import 'package:my_tasks/src/counter/constants/counter_enum.dart';
 import 'package:my_tasks/src/counter/data/counter_dto.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -11,14 +11,21 @@ class CounterRepository {
       //* Se declara esta variable para devolver al bloc el listado y el valor actual del contador
       final Map<String, dynamic> counterResponse = {
         "counterA": null,
-        "counterB": null
+        "counterB": null,
+        "listCounterA": [],
+        "listCounterB": [],
       };
 
       counterResponse['counterA'] =
           await selectCurrentCounter(CounterEnum.counterA);
+      counterResponse['counterB'] =
+          await selectCurrentCounter(CounterEnum.counterB);
+
+      Map<String, dynamic>? listCounter = await getListCounter();
       counterResponse['listCounterA'] =
-          await selectPreviousCounters(CounterEnum.counterA);
-      // counterResponse['counterB'] = await selectCurrentCounter(CounterEnum.counterB);
+          listCounter == null ? [] : listCounter['listCounterA'];
+      counterResponse['listCounterB'] =
+          listCounter == null ? [] : listCounter['listCounterB'];
 
       return counterResponse;
     } catch (e) {
@@ -26,19 +33,37 @@ class CounterRepository {
     }
   }
 
-  Future<List<CounterDto>?> getListCounter(CounterEnum counterEnum) async {
+  Future<Map<String, dynamic>?> getListCounter() async {
     try {
-      final values = await supabase.client
-          .from(counterEnum == CounterEnum.counterA ? 'counter_a' : 'counter_b')
+      //* Se declara esta variable para devolver al bloc el listado y el valor actual del contador
+      final Map<String, dynamic> counterResponse = {
+        "listCounterA": null,
+        "listCounterB": null
+      };
+      final listCounterA = await supabase.client
+          .from('counter_a')
           .select('*')
           .order('id', ascending: true);
 
-      List<CounterDto> listCounters = [];
+      List<CounterDto> listCountersA = [];
 
-      for (var value in values) {
-        listCounters.add(CounterDto.fromJson(value));
+      for (var value in listCounterA) {
+        listCountersA.add(CounterDto.fromJson(value));
       }
-      return listCounters;
+      counterResponse['listCounterA'] = listCountersA;
+
+      final listCounterB = await supabase.client
+          .from('counter_b')
+          .select('*')
+          .order('id', ascending: true);
+
+      List<CounterDto> listCountersB = [];
+
+      for (var value in listCounterB) {
+        listCountersB.add(CounterDto.fromJson(value));
+      }
+      counterResponse['listCounterB'] = listCountersB;
+      return counterResponse;
     } catch (e) {
       return null;
     }
@@ -83,7 +108,7 @@ class CounterRepository {
           .select()
           .single();
 
-      await updateCounter(currentCounterValue.id!);
+      await updateCounter(counterEnum, currentCounterValue.id!);
       final previousCounters = await selectPreviousCounters(counterEnum);
 
       counterResponse['listCounter'] = previousCounters;
@@ -110,7 +135,7 @@ class CounterRepository {
           .select()
           .single();
 
-      await updateCounter(counterValue.id!);
+      await updateCounter(counterEnum, counterValue.id!);
       final previousCounters = await selectPreviousCounters(counterEnum);
 
       counterResponse['listCounter'] = previousCounters;
@@ -122,9 +147,9 @@ class CounterRepository {
     return null;
   }
 
-  Future<void> updateCounter(int idCounter) async {
+  Future<void> updateCounter(CounterEnum counterEnum, int idCounter) async {
     await supabase.client
-        .from('counter_a')
+        .from(counterEnum == CounterEnum.counterA ? 'counter_a' : 'counter_b')
         .update({'current': false}).eq('id', idCounter);
   }
 }

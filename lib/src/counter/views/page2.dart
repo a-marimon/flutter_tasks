@@ -12,36 +12,51 @@ class Page2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<CounterBloc, CounterState>(
-        builder: (context, state) {
-          return SizedBox(
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                //* Navigation Section
-                NavigationSection(
-                  title: 'Contador B',
-                  text: 'Ir al contador A',
-                  onPressed: () {
-                    context.pushNamed(AppRouter.page1.name);
-                  },
-                ),
-
-                //*Counter Section
-                CounterSection(
-                  value: state.valueB!,
-                    onPressedAdd: () {
-                      context.read<CounterBloc>().add(CounterAddB());
+      body: BlocBuilder<CounterBloc, CounterState>(builder: (context, state) {
+        switch (state.counterStatus) {
+          case CounterStatus.loading:
+            return const Center(child: CircularProgressIndicator());
+          case CounterStatus.error:
+            return const Center(
+              child: Text('Ha ocurrido un error inesperado'),
+            );
+          default:
+            return SizedBox(
+              width: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  //* Navigation Section
+                  NavigationSection(
+                    title: 'Contador B',
+                    text: 'Ir al contador A',
+                    onPressed: () {
+                      context.pushNamed(AppRouter.page1.name);
                     },
-                    onPressedDecrement: () {
-                      context.read<CounterBloc>().add(CounterDecrementB());
-                    }),
-              ],
-            ),
-          );
-        },
-      ),
+                  ),
+
+                  //*Counter Section
+                  CounterSection(
+                      value: state.currentCounterB!.value!,
+                      onPressedAdd: () {
+                        context.read<CounterBloc>().add(CounterAddB());
+                      },
+                      onPressedDecrement: () {
+                        context.read<CounterBloc>().add(CounterDecrementB());
+                      }),
+                  const SizedBox.square(dimension: 10),
+
+                  ElevatedButton(
+                      onPressed: () {
+                        context.pushNamed(AppRouter.page3.name,
+                            pathParameters: {'counterValue': 'counterB'});
+                      },
+                      child: const Text('Ver estadísticas')),
+                ],
+              ),
+            );
+        }
+      }),
     );
   }
 }
