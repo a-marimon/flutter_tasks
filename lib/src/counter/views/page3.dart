@@ -1,8 +1,10 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_tasks/src/counter/bloc/counter_bloc.dart';
 import 'package:my_tasks/src/counter/constants/counter_enum.dart';
 import 'package:my_tasks/src/counter/data/counter_dto.dart';
+import 'package:my_tasks/src/counter/widgets/pie_chart_sections.dart';
 import 'package:my_tasks/src/utils/utils.dart';
 
 class Page3 extends StatefulWidget {
@@ -38,10 +40,12 @@ class _Page3State extends State<Page3> {
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                 child: Column(
                   children: [
-                    Container(
+                    SizedBox(
                       height: 200,
-                      width: 200,
-                      color: Colors.red,
+                      child: PieChart(PieChartData(
+                          sections: getSections(
+                              counterA: state.currentCounterA!.value!,
+                              counterB: state.currentCounterB!.value!))),
                     ),
                     const SizedBox.square(dimension: 5),
                     Expanded(
