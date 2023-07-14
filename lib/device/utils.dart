@@ -11,7 +11,9 @@ class Utils {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
   }
 
+  //configuracion del cliente http
   static RestClient http = RestClient(DioHttpHelper.client());
 
+  //acceso al contexto actual proporcionado por goRouter
   static BuildContext? currentContext() => GoNavigator.router.routeInformationParser.configuration.navigatorKey.currentContext;
 }
