@@ -1,9 +1,10 @@
 import 'package:meta/meta.dart';
 import 'package:my_tasks/data/repository/counter/counter_repository.dart';
+import 'package:my_tasks/data/repository/exepctions.dart';
 import 'package:my_tasks/device/utils.dart';
 import 'package:my_tasks/domain/entity/entity.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../dash/dash_bloc.dart';
+import 'package:my_tasks/presentation/blocs/dash/dash_bloc.dart';
 
 part 'counter_event.dart';
 
@@ -20,8 +21,17 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
 
   CounterBloc({required this.name}) : super(CounterInitialState()) {
     on<CounterLoadEvent>((event, emit) async {
-      CounterEntity? last = await repository.last();
-      emit(CounterReadyState(entity: last ?? CounterEntity(name: name, operation: '', current: 0, datetime: DateTime.now(), id: 0)));
+      if (state is CounterErrorState || state is CounterUnknownErrorState) {
+        emit(CounterInitialState());
+      }
+      try {
+        CounterEntity? last = await repository.last();
+        emit(CounterReadyState(entity: last ?? CounterEntity(name: name, operation: '', current: 0, datetime: DateTime.now(), id: 0)));
+      } on MyException catch (e) {
+        emit(CounterErrorState(exception: e));
+      } on Exception catch (e, st) {
+        emit(CounterUnknownErrorState(exception: e, stackTrace: st));
+      }
     });
     on<CounterAddEvent>((event, emit) {
       if (state is CounterReadyState) _operation(event.pas, emit, state as CounterReadyState, operation: '+');
@@ -34,7 +44,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
   _operation(int pass, emit, CounterReadyState state, {required String operation}) async {
     CounterEntity last = state.entity;
     emit(state.copyWith(request: true));
-    int toSum = 0;
+    late int toSum;
     switch (operation) {
       case '+':
         toSum = last.current + pass;
@@ -43,12 +53,19 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
         toSum = last.current - pass;
         break;
       default:
+        toSum = 0;
         break;
     }
-    CounterEntity? entity = await repository.save(name: name, operation: '+', value: toSum);
-    emit(state.copyWith(entity: entity ?? last));
-    //Refrescar datos del DashBloc
-    // Al estar en el topWidget , el context que me provee el goRouter puede acceder a ese bloc
-    Utils.currentContext()?.read<DashBloc>().add(DashRefreshEvent());
+    try {
+      CounterEntity? entity = await repository.save(name: name, operation: '+', value: toSum);
+      emit(state.copyWith(entity: entity ?? last));
+      //Refrescar datos del DashBloc
+      // Al estar en el topWidget , el context que me provee el goRouter puede acceder a ese bloc
+      Utils.currentContext()?.read<DashBloc>().add(DashRefreshEvent());
+    } on MyException catch (e) {
+      emit(CounterErrorState(exception: e));
+    } on Exception catch (e, st) {
+      emit(CounterUnknownErrorState(exception: e, stackTrace: st));
+    }
   }
 }

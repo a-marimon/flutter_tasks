@@ -22,3 +22,16 @@ class CounterReadyState extends CounterState {
     return CounterReadyState(entity: entity ?? this.entity, request: request);
   }
 }
+
+class CounterErrorState extends CounterState {
+  final MyException exception;
+
+  const CounterErrorState({required this.exception});
+}
+
+class CounterUnknownErrorState extends CounterState {
+  final Exception exception;
+  final StackTrace stackTrace;
+
+  const CounterUnknownErrorState({required this.exception, required this.stackTrace});
+}
