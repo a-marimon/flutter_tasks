@@ -32,10 +32,30 @@ dependencies:
   flutter:
     sdk: flutter
 
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
+  #HTTP
+  dio: ^5.2.1+1 #Un paquete para hacer solicitudes HTTP en Flutter, con funciones como la cancelación de solicitudes, la gestión de errores, la autenticación, entre otros.
+  retrofit: ^4.0.1 #Un paquete de cliente HTTP para Flutter que ayuda a simplificar la comunicación con servicios web RESTful
+  #STATES
+  bloc: ^8.1.2 #Un patrón de estado de gestión de estado predecible para Flutter que ayuda a separar la lógica empresarial de la vista.
+  flutter_bloc: ^8.1.3 #Un paquete que implementa el patrón BLoC en Flutter y proporciona herramientas para trabajar con el patrón BLoC.
+  equatable: ^2.0.5 #Un paquete que ayuda a comparar objetos de manera fácil y eficiente.
+  #DEVICE
+  device_info_plus: ^9.0.2 #Un paquete que proporciona información detallada sobre el dispositivo actual, como el modelo, la versión del sistema operativo, la identificación del dispositivo, entre otros.
+  package_info_plus: ^4.0.2 #Un paquete que proporciona información detallada sobre la aplicación actual, como el nombre, la versión, el número de compilación, entre otros.
+  #ROUTER
+  go_router: ^9.0.3 #Un paquete para manejar la navegación en Flutter que ayuda a definir rutas de navegación de manera intuitiva y fácil.
+  #SCREEN
+  responsive_framework: ^1.1.0 # Un paquete que ayuda a crear diseños receptivos en Flutter que se adaptan a diferentes tamaños de pantalla.
+  #DESIGN
+  fl_chart: ^0.63.0 #Un paquete para crear gráficos hermosos y animados en Flutter.
+  flutter_staggered_grid_view: ^0.6.2 #Un paquete que ayuda a crear diseños de cuadrícula escalonados en Flutter.
+  #UTILS
+  json_annotation: ^4.8.1 #Un paquete que ayuda a generar código JSON serializable y deserializable.
+  freezed_annotation: ^2.4.1 #Un paquete que ayuda a generar código inmutable y serializable.
+  path_provider: ^2.0.15 #Un paquete que proporciona rutas de acceso a directorios comunes en dispositivos móviles.
+  timeago: ^3.5.0 #Un paquete que ayuda a crear cadenas de tiempo legibles para humanos.
+  intl: ^0.18.1 #Un paquete que proporciona herramientas para la internacionalización y localización en Flutter.
+  cupertino_icons: ^1.0.5
 
 dev_dependencies:
   flutter_test:
@@ -46,7 +66,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^2.0.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
