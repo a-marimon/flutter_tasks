@@ -4,8 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_tasks/data/const.dart';
 import 'package:my_tasks/device/utils.dart';
 import 'package:my_tasks/presentation/blocs/dash/dash_bloc.dart';
-import 'package:my_tasks/presentation/widgets/error/error_page.dart';
-import 'package:my_tasks/presentation/widgets/error/unknown_error_page.dart';
+import 'package:my_tasks/presentation/widgets/error/error.dart';
 
 class PieChartWidget extends StatelessWidget {
   const PieChartWidget({Key? key}) : super(key: key);
@@ -23,10 +22,10 @@ class PieChartWidget extends StatelessWidget {
             return _buildReadyState(state as DashReadyState, constraints: contrain, scheme: scheme);
 
           case DashErrorState:
-            return _buildErrorState(context, state as DashErrorState);
+            return buildErrorState(context, state as DashErrorState);
 
           case DashUnknownErrorState:
-            return _buildUnknownErrorState(context, state as DashUnknownErrorState);
+            return buildUnknownErrorState(context, state as DashUnknownErrorState);
 
           default:
             return _buildLoadingState();
@@ -78,21 +77,4 @@ class PieChartWidget extends StatelessWidget {
             ),
           );
   }
-
-  _buildErrorState(BuildContext context, DashErrorState state) => MyExceptionErrorWidget(
-        exception: state.exception,
-        detail: 'PieChart',
-        callBack: () {
-          context.read<DashBloc>().add(DashRefreshEvent());
-        },
-      );
-
-  _buildUnknownErrorState(BuildContext context, DashUnknownErrorState state) => UnknownErrorWidget(
-        exception: state.exception,
-        stackTrace: state.stackTrace,
-        detail: 'PieChart',
-        callBack: () {
-          context.read<DashBloc>().add(DashRefreshEvent());
-        },
-      );
 }
