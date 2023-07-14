@@ -6,8 +6,9 @@ class UnknownErrorWidget extends StatelessWidget {
   final Exception exception;
   final StackTrace stackTrace;
   final Function()? callBack;
+  final bool small;
 
-  const UnknownErrorWidget({Key? key, required this.detail, required this.exception, required this.stackTrace, this.callBack}) : super(key: key);
+  const UnknownErrorWidget({Key? key, required this.detail, required this.exception, required this.stackTrace, this.callBack, this.small=false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +22,7 @@ class UnknownErrorWidget extends StatelessWidget {
           detail: detail,
           callBack: callBack,
           stackTrace: stackTrace,
+          small: small
         );
       },
     );
