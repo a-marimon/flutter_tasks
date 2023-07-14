@@ -4,7 +4,7 @@ import 'package:my_tasks/data/const.dart';
 
 import 'package:my_tasks/presentation/blocs/dash/dash_bloc.dart';
 import 'package:my_tasks/presentation/widgets/error/error.dart';
-
+import 'package:skeletonizer/skeletonizer.dart';
 
 class OperationCount extends StatelessWidget {
   const OperationCount({Key? key}) : super(key: key);
@@ -31,9 +31,18 @@ class OperationCount extends StatelessWidget {
     });
   }
 
-  _buildLoadingState() => const Center(
-        child: CircularProgressIndicator(
-          strokeWidth: 2,
+  _buildLoadingState() => Skeletonizer(
+        enabled: true,
+        child: ListView.builder(
+          itemCount: 2,
+          itemBuilder: (context, index) {
+            return const Card(
+              child: ListTile(
+                title: Text("Counter Name"),
+                subtitle: Text("Operations"),
+              ),
+            );
+          },
         ),
       );
 
