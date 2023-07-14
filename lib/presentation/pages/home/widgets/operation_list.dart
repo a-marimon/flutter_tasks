@@ -52,10 +52,10 @@ class _OperationListState extends State<OperationList> with SingleTickerProvider
                               builder: (_, constrains) => _buildReadyState(state as DashReadyState, e, scheme: scheme, counterColor: e['color'], constraints: constrains));
 
                         case DashErrorState:
-                          return buildErrorState(context, state as DashErrorState);
+                          return buildErrorState(context, (state as DashErrorState).exception);
 
                         case DashUnknownErrorState:
-                          return buildUnknownErrorState(context, state as DashUnknownErrorState);
+                          return buildUnknownErrorState(context, (state as DashUnknownErrorState).exception, state.stackTrace);
 
                         default:
                           return _buildLoadingState();

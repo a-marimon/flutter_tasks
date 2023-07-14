@@ -23,10 +23,10 @@ class PieChartWidget extends StatelessWidget {
             return _buildReadyState(state as DashReadyState, constraints: constraints, scheme: scheme);
 
           case DashErrorState:
-            return buildErrorState(context, state as DashErrorState, small: true);
+            return buildErrorState(context, (state as DashErrorState).exception, small: true);
 
           case DashUnknownErrorState:
-            return buildUnknownErrorState(context, state as DashUnknownErrorState, small: true);
+            return buildUnknownErrorState(context, (state as DashUnknownErrorState).exception, state.stackTrace, small: true);
 
           default:
             return _buildLoadingState(constraints: constraints);
