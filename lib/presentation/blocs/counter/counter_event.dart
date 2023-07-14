@@ -5,7 +5,9 @@ abstract class CounterEvent {
   const CounterEvent();
 }
 
-class CounterLoadEvent extends CounterEvent {}
+class CounterLoadEvent extends CounterEvent {
+  const CounterLoadEvent();
+}
 
 class CounterAddEvent extends CounterEvent {
   final int pas;

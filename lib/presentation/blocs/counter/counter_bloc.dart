@@ -20,6 +20,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
   }
 
   CounterBloc({required this.name}) : super(CounterInitialState()) {
+    repository = CounterRepository(counterName: name);
     on<CounterLoadEvent>((event, emit) async {
       if (state is CounterErrorState || state is CounterUnknownErrorState) {
         emit(CounterInitialState());
