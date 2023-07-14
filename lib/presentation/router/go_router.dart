@@ -41,10 +41,16 @@ class RouterNotifier extends ChangeNotifier {
   }
 
   List<GoRoute> get _routes => [
-        GoRoute(
-          path: '/',
-          builder: (BuildContext context, GoRouterState state) => const HomePage(),
-        )
+        GoRoute(path: '/', builder: (BuildContext context, GoRouterState state) => const HomePage(), routes: [
+          GoRoute(
+            path: 'counter/:name',
+            name: CounterPage.pageName,
+            pageBuilder: (context, _) {
+              final counterName = _.pathParameters['name'] ?? "";
+              return fadeTransition(CounterPage(counterName: counterName), _);
+            },
+          ),
+        ])
       ];
 }
 
