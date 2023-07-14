@@ -87,12 +87,7 @@ class _OperationListState extends State<OperationList> with SingleTickerProvider
       );
 
   _buildReadyState(DashReadyState state, Map<String, dynamic> counter, {required ColorScheme scheme, required Color counterColor, required BoxConstraints constraints}) {
-    List<CounterEntity> list = [];
-    int index = state.list.indexWhere((element) => element.name == counter['name']);
-    if (index != -1) {
-      list = state.list[index].operations;
-    }
-
+    List<CounterEntity> list = state.operationList(counter['name']);
     return state.list.isEmpty
         ? EmptyWidget(constraints: constraints)
         : ListView.builder(

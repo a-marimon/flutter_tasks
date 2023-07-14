@@ -28,6 +28,15 @@ class DashReadyState extends DashState {
     }
     return operationCounts;
   }
+
+  operationList(String counterName) {
+    List<CounterEntity> temp = [];
+    int index = list.indexWhere((element) => element.name == counterName);
+    if (index != -1) {
+      temp = list[index].operations;
+    }
+    return temp;
+  }
 }
 
 class DashErrorState extends DashState {

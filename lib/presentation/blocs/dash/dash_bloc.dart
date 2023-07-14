@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:my_tasks/data/repository/dash/dash_respository.dart';
 import 'package:my_tasks/data/repository/exepctions.dart';
+import 'package:my_tasks/domain/entity/counter/counter_entity.dart';
 
 import 'package:my_tasks/domain/entity/dash/dash_entity.dart';
 
