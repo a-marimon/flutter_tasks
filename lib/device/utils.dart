@@ -1,6 +1,7 @@
 import 'package:my_tasks/data/api/api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:my_tasks/data/const.dart';
 import 'package:my_tasks/presentation/router/go_router.dart';
 
 class Utils {
@@ -16,4 +17,10 @@ class Utils {
 
   //acceso al contexto actual proporcionado por goRouter
   static BuildContext? currentContext() => GoNavigator.router.routeInformationParser.configuration.navigatorKey.currentContext;
+
+  static getCounterColor(String name) {
+    int index = nameCounters.indexWhere((element) => element['name'] == name);
+    if (index == -1) return kPrimaryColor;
+    return nameCounters[index]['color'];
+  }
 }
