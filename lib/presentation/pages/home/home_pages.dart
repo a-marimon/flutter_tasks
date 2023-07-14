@@ -45,6 +45,11 @@ class _HomePageState extends State<HomePage> {
                 child: PieChartWidget(),
               ),
             ),
+            StaggeredGridTile.count(
+              crossAxisCellCount: size.width > size.height ? 4 : 2,
+              mainAxisCellCount:  size.width > size.height ? 1 : 2,
+              child: const OperationCount(),
+            ),
           ],
         ),
       ),
