@@ -50,6 +50,11 @@ class _HomePageState extends State<HomePage> {
               mainAxisCellCount:  size.width > size.height ? 1 : 2,
               child: const OperationCount(),
             ),
+            const StaggeredGridTile.count(
+              crossAxisCellCount: 4,
+              mainAxisCellCount: 6,
+              child: OperationList(),
+            ),
           ],
         ),
       ),
