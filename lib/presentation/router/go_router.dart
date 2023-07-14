@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:my_tasks/presentation/pages/pages.dart';
 
 class GoNavigator {
   static final routerN = RouterNotifier();
@@ -39,7 +40,12 @@ class RouterNotifier extends ChangeNotifier {
     return null;
   }
 
-  List<GoRoute> get _routes => [];
+  List<GoRoute> get _routes => [
+        GoRoute(
+          path: '/',
+          builder: (BuildContext context, GoRouterState state) => const HomePage(),
+        )
+      ];
 }
 
 fadeTransition(Widget page, GoRouterState state, {Cubic? curves}) => CustomTransitionPage(
