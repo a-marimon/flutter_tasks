@@ -34,7 +34,7 @@ class OperationCount extends StatelessWidget {
   _buildLoadingState() => Skeletonizer(
         enabled: true,
         child: ListView.builder(
-          itemCount: 2,
+          itemCount: nameCounters.length,
           itemBuilder: (context, index) {
             return const Card(
               child: ListTile(
