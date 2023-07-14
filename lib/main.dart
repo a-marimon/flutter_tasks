@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_tasks/device/theme/theme.dart';
 import 'package:my_tasks/device/utils.dart';
+import 'package:my_tasks/presentation/blocs/dash/dash_bloc.dart';
 import 'package:my_tasks/presentation/router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-void main() => Utils.init().then((value) => runApp(const MyApp()));
+void main() => Utils.init().then((value) => runApp(BlocProvider(create: (_) => DashBloc(), child: const MyApp())));
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
