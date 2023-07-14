@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:my_tasks/data/const.dart';
 import 'package:my_tasks/domain/entity/counter/counter_entity.dart';
 import 'package:my_tasks/presentation/blocs/dash/dash_bloc.dart';
+import 'package:my_tasks/presentation/widgets/empty/empty_widget.dart';
 import 'package:my_tasks/presentation/widgets/error/error.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -47,7 +48,8 @@ class _OperationListState extends State<OperationList> with SingleTickerProvider
                           return _buildLoadingState();
 
                         case DashReadyState:
-                          return _buildReadyState(state as DashReadyState, _tabController.index, scheme: scheme, counterColor: e['color']);
+                          return LayoutBuilder(
+                              builder: (_, constrains) => _buildReadyState(state as DashReadyState, e, scheme: scheme, counterColor: e['color'], constraints: constrains));
 
                         case DashErrorState:
                           return buildErrorState(context, state as DashErrorState);
@@ -77,24 +79,22 @@ class _OperationListState extends State<OperationList> with SingleTickerProvider
             return const ListTile(
               leading: CircleAvatar(),
               title: Text("Operation DateTime"),
-              subtitle: Text("Opertion TimeAgo"),
+              subtitle: Text("Operation TimeAgo"),
               trailing: Text("0"),
             );
           },
         ),
       );
 
-  _buildReadyState(DashReadyState state, int tabIndex, {required ColorScheme scheme, required Color counterColor}) {
-    List<CounterEntity> list = state.list[tabIndex].operations;
+  _buildReadyState(DashReadyState state, Map<String, dynamic> counter, {required ColorScheme scheme, required Color counterColor, required BoxConstraints constraints}) {
+    List<CounterEntity> list = [];
+    int index = state.list.indexWhere((element) => element.name == counter['name']);
+    if (index != -1) {
+      list = state.list[index].operations;
+    }
 
     return state.list.isEmpty
-        ? const Align(
-            alignment: Alignment.topCenter,
-            child: Padding(
-              padding: EdgeInsets.only(top: kDefaultPadding),
-              child: Text("Empty"),
-            ),
-          )
+        ? EmptyWidget(constraints: constraints)
         : ListView.builder(
             physics: const BouncingScrollPhysics(),
             itemBuilder: (_, i) => ListTile(
