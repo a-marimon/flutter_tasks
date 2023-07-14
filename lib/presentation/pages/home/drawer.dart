@@ -20,25 +20,26 @@ class MyDrawer extends StatelessWidget {
             ),
             Expanded(
               child: ListView(
-                  physics: const BouncingScrollPhysics(),
-                  padding: EdgeInsets.zero,
-                  children: nameCounters
-                      .map(
-                        (e) => ListTile(
-                          leading: Icon(
-                            Icons.exposure,
-                            color: e['color'] as Color,
-                          ),
-                          title: Text("Counter ${e['name']}"),
-                          onTap: () {
-                            // Cerrar el drawer y navegar posteriormente hacia la siguiente pagina
-                            // asi evito que al regresar de esta no este abierto aun el drawer
-                            Navigator.pop(context);
-                            context.goNamed(CounterPage.pageName, pathParameters: {"name": e['name']});
-                          },
+                physics: const BouncingScrollPhysics(),
+                padding: EdgeInsets.zero,
+                children: nameCounters
+                    .map(
+                      (e) => ListTile(
+                        leading: Icon(
+                          Icons.exposure,
+                          color: e['color'] as Color,
                         ),
-                      )
-                      .toList()),
+                        title: Text("Counter ${e['name']}"),
+                        onTap: () {
+                          // Cerrar el drawer y navegar posteriormente hacia la siguiente pagina
+                          // asi evito que al regresar de esta no este abierto aun el drawer
+                          Navigator.pop(context);
+                          context.goNamed(CounterPage.pageName, pathParameters: {"name": e['name']});
+                        },
+                      ),
+                    )
+                    .toList(),
+              ),
             ),
             const Divider(height: 1),
             ListTile(
