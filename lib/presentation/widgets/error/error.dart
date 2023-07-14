@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_tasks/presentation/blocs/dash/dash_bloc.dart';
 import 'package:my_tasks/presentation/widgets/error/error.dart';
 
-export './unknown_error_page.dart';
-export './error_page.dart';
+export './unknown_error_widget.dart';
+export './error_widget.dart';
 
 buildErrorState(BuildContext context, DashErrorState state,{bool small=false}) => MyExceptionErrorWidget(
       exception: state.exception,
