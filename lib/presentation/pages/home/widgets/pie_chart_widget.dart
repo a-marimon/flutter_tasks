@@ -5,6 +5,7 @@ import 'package:my_tasks/data/const.dart';
 import 'package:my_tasks/device/utils.dart';
 import 'package:my_tasks/presentation/blocs/dash/dash_bloc.dart';
 import 'package:my_tasks/presentation/widgets/error/error.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class PieChartWidget extends StatelessWidget {
   const PieChartWidget({Key? key}) : super(key: key);
@@ -13,13 +14,13 @@ class PieChartWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     return LayoutBuilder(
-      builder: (_, contrain) => BlocBuilder<DashBloc, DashState>(builder: (ctx, state) {
+      builder: (_, constraints) => BlocBuilder<DashBloc, DashState>(builder: (ctx, state) {
         switch (state.runtimeType) {
           case DashInitialState:
-            return _buildLoadingState();
+            return _buildLoadingState(constraints: constraints);
 
           case DashReadyState:
-            return _buildReadyState(state as DashReadyState, constraints: contrain, scheme: scheme);
+            return _buildReadyState(state as DashReadyState, constraints: constraints, scheme: scheme);
 
           case DashErrorState:
             return buildErrorState(context, state as DashErrorState);
@@ -28,15 +29,25 @@ class PieChartWidget extends StatelessWidget {
             return buildUnknownErrorState(context, state as DashUnknownErrorState);
 
           default:
-            return _buildLoadingState();
+            return _buildLoadingState(constraints: constraints);
         }
       }),
     );
   }
 
-  _buildLoadingState() => const Center(
-        child: CircularProgressIndicator(
-          strokeWidth: 2,
+  _buildLoadingState({required BoxConstraints constraints}) => Center(
+        child: Skeletonizer(
+          enabled: true,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              const Text("Counter"),
+              CircleAvatar(
+                radius: constraints.maxWidth / 3.5,
+              ),
+              const Text("Counter"),
+            ],
+          ),
         ),
       );
 
