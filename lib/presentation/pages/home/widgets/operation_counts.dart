@@ -20,10 +20,10 @@ class OperationCount extends StatelessWidget {
           return _buildReadyState(state as DashReadyState);
 
         case DashErrorState:
-          return buildErrorState(context, state as DashErrorState,small: true);
+          return buildErrorState(context, state as DashErrorState, small: true);
 
         case DashUnknownErrorState:
-          return buildUnknownErrorState(context, state as DashUnknownErrorState,small: true);
+          return buildUnknownErrorState(context, state as DashUnknownErrorState, small: true);
 
         default:
           return _buildLoadingState();
@@ -51,16 +51,10 @@ class OperationCount extends StatelessWidget {
       child: Column(
         children: nameCounters.map(
           (e) {
-            int index = state.list.indexWhere((element) => element.name == e['name']);
-            int operationCounts = 0;
-            if (index != -1) {
-              operationCounts = state.list[index].count;
-            }
-
             return Card(
               child: ListTile(
                 title: Text(e['name']),
-                subtitle: Text("Operations: $operationCounts"),
+                subtitle: Text("Operations: ${state.operationCounts(e['name'])}"),
               ),
             );
           },

@@ -19,6 +19,15 @@ class DashReadyState extends DashState {
   }) {
     return DashReadyState(list: list ?? this.list);
   }
+
+  operationCounts(String counterName) {
+    int index = list.indexWhere((element) => element.name == counterName);
+    int operationCounts = 0;
+    if (index != -1) {
+      operationCounts = list[index].count;
+    }
+    return operationCounts;
+  }
 }
 
 class DashErrorState extends DashState {
