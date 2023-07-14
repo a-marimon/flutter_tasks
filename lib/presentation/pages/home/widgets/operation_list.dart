@@ -31,6 +31,7 @@ class _OperationListState extends State<OperationList> with SingleTickerProvider
       children: [
         TabBar(
           controller: _tabController,
+          isScrollable: nameCounters.length > 8,
           indicatorSize: TabBarIndicatorSize.tab,
           tabs: nameCounters.map((e) => Tab(text: e['name'])).toList(),
         ),
