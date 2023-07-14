@@ -56,6 +56,7 @@ dependencies:
   path_provider: ^2.0.15 #Un paquete que proporciona rutas de acceso a directorios comunes en dispositivos móviles.
   timeago: ^3.5.0 #Un paquete que ayuda a crear cadenas de tiempo legibles para humanos.
   intl: ^0.18.1 #Un paquete que proporciona herramientas para la internacionalización y localización en Flutter.
+  skeletonizer: ^0.2.0 #Un paquete para vrindar un mejor diseño de loading
   cupertino_icons: ^1.0.5
 
 dev_dependencies:
