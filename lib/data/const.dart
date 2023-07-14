@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 const String kAppName = 'Flutter Task';
 const double kDefaultPadding = 16.0;
 const kPrimaryColor = Colors.yellow;
-
+const kDeveloperEmail = 'ariancamejo0897@gmail.com';
 const String kApiUrl = 'https://acarrera0897.pythonanywhere.com/api';
 const List<dynamic> nameCounters = [
   {"name": "A", "color": Colors.red},
