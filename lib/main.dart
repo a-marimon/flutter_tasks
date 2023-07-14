@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:my_tasks/device/theme/theme.dart';
+import 'package:my_tasks/device/utils.dart';
 import 'package:my_tasks/presentation/router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => Utils.init().then((value) => runApp(const MyApp()));
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
