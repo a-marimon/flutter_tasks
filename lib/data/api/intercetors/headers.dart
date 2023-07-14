@@ -1,11 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:my_tasks/data/const.dart';
 
 class HeadersInterceptor extends Interceptor {
   @override
   Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     options.headers['content-type'] = 'application/json';
-
     handler.next(options);
   }
 
@@ -19,4 +17,3 @@ class HeadersInterceptor extends Interceptor {
     return handler.next(err);
   }
 }
-

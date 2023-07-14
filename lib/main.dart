@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_tasks/device/theme/theme.dart';
 import 'package:my_tasks/presentation/router/go_router.dart';
 
 void main() {
@@ -12,6 +13,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      //THEME
+      theme: lightTheme(context),
+      darkTheme: darkTheme(context),
       //NAVIGATOR
       routerConfig: GoNavigator.router,
     );
