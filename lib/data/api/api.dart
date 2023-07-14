@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:my_tasks/data/api/intercetors/headers.dart';
 import 'package:my_tasks/data/const.dart';
 import 'package:my_tasks/domain/entity/entity.dart';
 
@@ -9,6 +10,20 @@ part 'api.g.dart';
 
 class Paths {
   static const counter = "/counter/";
+}
+
+class DioHttpHelper {
+  static Dio? _client;
+
+  static Dio client({bool free = false}) {
+    if (_client != null) return _client!;
+    Dio http = Dio();
+    http.interceptors.clear();
+    http.interceptors.add(HeadersInterceptor());
+    http.options.baseUrl = kApiUrl;
+    _client = http;
+    return _client!;
+  }
 }
 
 @RestApi(baseUrl: kApiUrl)
