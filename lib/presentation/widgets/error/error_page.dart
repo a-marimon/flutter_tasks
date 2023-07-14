@@ -6,8 +6,9 @@ class MyExceptionErrorWidget extends StatelessWidget {
   final String detail;
   final MyException exception;
   final Function()? callBack;
+  final bool small;
 
-  const MyExceptionErrorWidget({Key? key, required this.detail, required this.exception, this.callBack}) : super(key: key);
+  const MyExceptionErrorWidget({Key? key, required this.detail, required this.exception, this.callBack, this.small=false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +21,7 @@ class MyExceptionErrorWidget extends StatelessWidget {
           message: exception.message,
           detail: detail,
           callBack: callBack,
+            small: small
         );
       },
     );

@@ -9,6 +9,7 @@ centralData({
   StackTrace? stackTrace,
   required String message,
   required String detail,
+  bool small = false,
 }) {
   double max = constraints.maxWidth > constraints.maxHeight ? constraints.maxWidth : constraints.maxHeight;
   double min = constraints.maxWidth > constraints.maxHeight ? constraints.maxHeight : constraints.maxWidth;
@@ -16,29 +17,25 @@ centralData({
   return GestureDetector(
     onTap: () => callBack?.call(),
     child: SizedBox.expand(
-      child: Stack(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.warning_amber_rounded, size: min * 0.4, color: scheme.error),
-              Text(stackTrace?.toString() ?? message),
-              const Text("Press warning to retry"),
-              SizedBox(height: kDefaultPadding, width: max),
-              if (stackTrace != null)
-                Padding(
-                  padding: const EdgeInsets.all(kDefaultPadding),
-                  child: Text(stackTrace.toString()),
-                ),
-              Tooltip(
-                message: "send email to developers",
-                child: IconButton(
-                  onPressed: () => _launchUrl(message: message, detail: detail),
-                  icon: const Icon(Icons.email),
-                ),
+          Icon(Icons.warning_amber_rounded, size: min * 0.4, color: scheme.error),
+          if (!small) Text(stackTrace?.toString() ?? message),
+          if (callBack != null) Text(small ? "Press to retry" : "Press warning to retry"),
+          if (stackTrace != null)
+            Padding(
+              padding: const EdgeInsets.all(kDefaultPadding),
+              child: Text(stackTrace.toString()),
+            ),
+          if (!small)
+            Tooltip(
+              message: "send email to developers",
+              child: IconButton(
+                onPressed: () => _launchUrl(message: message, detail: detail),
+                icon: const Icon(Icons.email),
               ),
-            ],
-          ),
+            ),
         ],
       ),
     ),
