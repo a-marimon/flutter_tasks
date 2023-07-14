@@ -29,6 +29,7 @@ class DashErrorState extends DashState {
 
 class DashUnknownErrorState extends DashState {
   final Exception exception;
+  final StackTrace stackTrace;
 
-  const DashUnknownErrorState({required this.exception});
+  const DashUnknownErrorState({required this.exception, required this.stackTrace});
 }
