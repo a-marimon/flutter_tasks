@@ -68,7 +68,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       emit(state.copyWith(entity: entity ?? last));
       //Refrescar datos del DashBloc
       // Al estar en el topWidget , el context que me provee el goRouter puede acceder a ese bloc
-      Utils.currentContext()?.read<DashBloc>().add(DashRefreshEvent());
+      Utils.currentContext()?.read<DashBloc>().add(DashLoadEvent());
     } on MyException catch (e) {
       emit(CounterErrorState(exception: e));
     } on Exception catch (e, st) {
