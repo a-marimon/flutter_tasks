@@ -17,26 +17,30 @@ centralData({
   return GestureDetector(
     onTap: () => callBack?.call(),
     child: SizedBox.expand(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.warning_amber_rounded, size: min * 0.4, color: scheme.error),
-          if (!small) Text(stackTrace?.toString() ?? message),
-          if (callBack != null) Text(small ? "Press to retry" : "Press warning to retry"),
-          if (stackTrace != null)
-            Padding(
-              padding: const EdgeInsets.all(kDefaultPadding),
-              child: Text(stackTrace.toString()),
-            ),
-          if (!small)
-            Tooltip(
-              message: "send email to developers",
-              child: IconButton(
-                onPressed: () => _launchUrl(message: message, detail: detail),
-                icon: const Icon(Icons.email),
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: min * 0.15,
               ),
-            ),
-        ],
+              Icon(Icons.warning_amber_rounded, size: min * 0.4, color: scheme.error),
+              if (callBack != null) Text(small ? "Press to retry" : "Press warning to retry"),
+              if (!small) Text(stackTrace?.toString() ?? message),
+              if (stackTrace != null && !small) Text(stackTrace.toString()),
+              if (!small)
+                Tooltip(
+                  message: "send email to developers",
+                  child: IconButton(
+                    onPressed: () => _launchUrl(message: message, detail: detail),
+                    icon: const Icon(Icons.email),
+                  ),
+                ),
+            ],
+          ),
+        ),
       ),
     ),
   );
