@@ -76,6 +76,7 @@ class _RealCounterPageState extends State<RealCounterPage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   FloatingActionButton.small(onPressed: () {}, heroTag: 'increment'),
+                  const SizedBox(width: kDefaultPadding),
                   FloatingActionButton.small(onPressed: () {}, heroTag: 'decrement'),
                 ],
               ),
@@ -120,6 +121,7 @@ class _RealCounterPageState extends State<RealCounterPage> {
                 backgroundColor: Utils.getCounterColor(counter['name']),
                 child: state.request ? loading : Icon(Icons.remove, color: scheme.background),
               ),
+              const SizedBox(width: kDefaultPadding),
               FloatingActionButton.small(
                 onPressed: state.request ? null : () => context.read<CounterBloc>().add(const CounterAddEvent()),
                 heroTag: 'increment',
