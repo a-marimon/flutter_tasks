@@ -49,19 +49,15 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
   _operation(int pass, emit, CounterReadyState state, {required String operation}) async {
     CounterEntity last = state.entity;
     emit(state.copyWith(request: true));
-    late int toSum;
     CounterEntity? entity;
     switch (operation) {
       case '+':
-        toSum = last.current + pass;
-        entity = await repository.save(name: name, operation: '+', value: toSum);
+        entity = await repository.save(name: name, operation: '+', value: last.current + pass);
         break;
       case '-':
-        toSum = last.current - pass;
-        entity = await repository.save(name: name, operation: '-', value: toSum);
+        entity = await repository.save(name: name, operation: '-', value: last.current - pass);
         break;
       default:
-        toSum = 0;
         break;
     }
     try {
