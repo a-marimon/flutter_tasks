@@ -1,10 +1,10 @@
 import 'package:meta/meta.dart';
 import 'package:my_tasks/data/repository/counter/counter_repository.dart';
 import 'package:my_tasks/data/repository/exepctions.dart';
-import 'package:my_tasks/device/utils.dart';
 import 'package:my_tasks/domain/entity/entity.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_tasks/presentation/blocs/dash/dash_bloc.dart';
+import 'package:my_tasks/presentation/router/go_router.dart';
 
 part 'counter_event.dart';
 
@@ -68,7 +68,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       emit(state.copyWith(entity: entity ?? last));
       //Refrescar datos del DashBloc
       // Al estar en el topWidget , el context que me provee el goRouter puede acceder a ese bloc
-      Utils.currentContext()?.read<DashBloc>().add(DashLoadEvent());
+      GoNavigator.currentContext()?.read<DashBloc>().add(DashLoadEvent());
     } on MyException catch (e) {
       emit(CounterErrorState(exception: e));
     } on Exception catch (e, st) {

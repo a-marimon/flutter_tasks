@@ -15,9 +15,6 @@ class Utils {
   //configuracion del cliente http
   static RestClient http = RestClient(DioHttpHelper.client());
 
-  //acceso al contexto actual proporcionado por goRouter
-  static BuildContext? currentContext() => GoNavigator.router.routeInformationParser.configuration.navigatorKey.currentContext;
-
   static getCounterColor(String name) {
     int index = nameCounters.indexWhere((element) => element['name'] == name);
     if (index == -1) return kPrimaryColor;

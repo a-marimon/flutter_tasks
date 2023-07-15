@@ -11,7 +11,7 @@ class GoNavigator {
     redirect: routerN._redirectLogic,
     routes: routerN._routes,
   );
-
+  //acceso al contexto actual proporcionado por goRouter
   static BuildContext? currentContext() => router.routeInformationParser.configuration.navigatorKey.currentContext;
 }
 
