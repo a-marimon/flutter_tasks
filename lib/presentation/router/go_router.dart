@@ -50,6 +50,11 @@ class RouterNotifier extends ChangeNotifier {
               return fadeTransition(CounterPage(counterName: counterName), _);
             },
           ),
+          GoRoute(
+            path: 'settings',
+            name: SettingsPage.pageName,
+            pageBuilder: (context, _) => fadeTransition(const SettingsPage(), _),
+          ),
         ])
       ];
 }

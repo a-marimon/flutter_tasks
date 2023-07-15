@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:my_tasks/data/const.dart';
 import 'package:my_tasks/presentation/pages/pages.dart';
 
+
 class MyDrawer extends StatelessWidget {
   const MyDrawer({Key? key}) : super(key: key);
 
@@ -46,7 +47,10 @@ class MyDrawer extends StatelessWidget {
               leading: const Icon(Icons.settings),
               title: const Text("Settings"),
               onTap: () {
+                // Cerrar el drawer y navegar posteriormente hacia la siguiente pagina
+                // asi evito que al regresar de esta no este abierto aun el drawer
                 Navigator.pop(context);
+                context.goNamed(SettingsPage.pageName);
               },
             ),
           ],
