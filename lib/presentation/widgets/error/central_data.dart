@@ -22,9 +22,6 @@ centralData({
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            height: stackTrace != null ? 0 : min * 0.15,
-          ),
           Icon(Icons.warning_amber_rounded, size: min * 0.4, color: scheme.error),
           if (callBack != null) Text(small ? "Press to retry" : "Press warning to retry"),
           if (!small && stackTrace == null) Text(message),
