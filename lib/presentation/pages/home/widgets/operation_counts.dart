@@ -20,10 +20,14 @@ class OperationCount extends StatelessWidget {
           return _buildReadyState(state as DashReadyState);
 
         case DashErrorState:
-          return buildErrorState(context, (state as DashErrorState).exception, small: true);
+          return buildErrorState(context, (state as DashErrorState).exception, small: true, detail: "OperationCount", callBack: () {
+            ctx.read<DashBloc>().add(DashRefreshEvent());
+          });
 
         case DashUnknownErrorState:
-          return buildUnknownErrorState(context, (state as DashUnknownErrorState).exception, state.stackTrace, small: true);
+          return buildUnknownErrorState(context, (state as DashUnknownErrorState).exception, state.stackTrace, small: true, detail: "OperationCount", callBack: () {
+            ctx.read<DashBloc>().add(DashRefreshEvent());
+          });
 
         default:
           return _buildLoadingState();
@@ -31,6 +35,7 @@ class OperationCount extends StatelessWidget {
     });
   }
 
+  //muestra una estructura esqueletal de los widgets que posea dentro
   _buildLoadingState() => Skeletonizer(
         enabled: true,
         child: ListView.builder(

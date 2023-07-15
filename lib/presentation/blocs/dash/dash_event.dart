@@ -4,3 +4,5 @@ part of 'dash_bloc.dart';
 abstract class DashEvent {}
 
 class DashRefreshEvent extends DashEvent {}
+
+class DashLoadEvent extends DashEvent {}

@@ -21,10 +21,8 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
 
   CounterBloc({required this.name}) : super(CounterInitialState()) {
     repository = CounterRepository(counterName: name);
+
     on<CounterLoadEvent>((event, emit) async {
-      if (state is CounterErrorState || state is CounterUnknownErrorState) {
-        emit(CounterInitialState());
-      }
       try {
         CounterEntity? last = await repository.last();
         emit(CounterReadyState(entity: last ?? CounterEntity(name: name, operation: '', current: 0, datetime: DateTime.now(), id: 0)));
@@ -33,6 +31,12 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       } on Exception catch (e, st) {
         emit(CounterUnknownErrorState(exception: e, stackTrace: st));
       }
+    });
+    on<CounterReLoadEvent>((event, emit) {
+      if (state is CounterErrorState || state is CounterUnknownErrorState) {
+        emit(CounterInitialState());
+      }
+      add(const CounterLoadEvent());
     });
     on<CounterAddEvent>((event, emit) {
       if (state is CounterReadyState) _operation(event.pas, emit, state as CounterReadyState, operation: '+');

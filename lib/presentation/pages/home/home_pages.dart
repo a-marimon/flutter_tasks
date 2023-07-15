@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     //inicio la primera carga para la visualizacion
-    context.read<DashBloc>().add(DashRefreshEvent());
+    context.read<DashBloc>().add(DashLoadEvent());
     super.initState();
   }
 

@@ -52,10 +52,14 @@ class _OperationListState extends State<OperationList> with SingleTickerProvider
                               builder: (_, constrains) => _buildReadyState(state as DashReadyState, e, scheme: scheme, counterColor: e['color'], constraints: constrains));
 
                         case DashErrorState:
-                          return buildErrorState(context, (state as DashErrorState).exception);
+                          return buildErrorState(context, (state as DashErrorState).exception, detail: "OperationList", callBack: () {
+                            ctx.read<DashBloc>().add(DashRefreshEvent());
+                          });
 
                         case DashUnknownErrorState:
-                          return buildUnknownErrorState(context, (state as DashUnknownErrorState).exception, state.stackTrace);
+                          return buildUnknownErrorState(context, (state as DashUnknownErrorState).exception, state.stackTrace, detail: "OperationList", callBack: () {
+                            ctx.read<DashBloc>().add(DashRefreshEvent());
+                          });
 
                         default:
                           return _buildLoadingState();
@@ -70,6 +74,7 @@ class _OperationListState extends State<OperationList> with SingleTickerProvider
     );
   }
 
+  //muestra una estructura esqueletal de los widgets que posea dentro
   _buildLoadingState() => Skeletonizer(
         enabled: true,
         child: ListView.builder(

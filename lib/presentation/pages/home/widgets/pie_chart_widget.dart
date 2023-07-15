@@ -23,10 +23,14 @@ class PieChartWidget extends StatelessWidget {
             return _buildReadyState(state as DashReadyState, constraints: constraints, scheme: scheme);
 
           case DashErrorState:
-            return buildErrorState(context, (state as DashErrorState).exception, small: true);
+            return buildErrorState(context, (state as DashErrorState).exception, small: true, detail: "PieChart", callBack: () {
+              ctx.read<DashBloc>().add(DashRefreshEvent());
+            });
 
           case DashUnknownErrorState:
-            return buildUnknownErrorState(context, (state as DashUnknownErrorState).exception, state.stackTrace, small: true);
+            return buildUnknownErrorState(context, (state as DashUnknownErrorState).exception, state.stackTrace, small: true, detail: "PieChart", callBack: () {
+              ctx.read<DashBloc>().add(DashRefreshEvent());
+            });
 
           default:
             return _buildLoadingState(constraints: constraints);
@@ -35,19 +39,19 @@ class PieChartWidget extends StatelessWidget {
     );
   }
 
-  _buildLoadingState({required BoxConstraints constraints}) => Center(
-        child: Skeletonizer(
-          enabled: true,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              const Text("Counter"),
-              CircleAvatar(
-                radius: constraints.maxWidth / 3.5,
-              ),
-              const Text("Counter"),
-            ],
-          ),
+  //muestra una estructura esqueletal de los widgets que posea dentro
+  _buildLoadingState({required BoxConstraints constraints}) => Skeletonizer(
+        enabled: true,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Text("Counter"),
+            CircleAvatar(
+              radius: constraints.maxWidth / 3.5,
+            ),
+            const Text("Counter"),
+          ],
         ),
       );
 

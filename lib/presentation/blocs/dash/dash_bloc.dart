@@ -14,11 +14,7 @@ class DashBloc extends Bloc<DashEvent, DashState> {
   DashRepository repository = DashRepository();
 
   DashBloc() : super(DashInitialState()) {
-    on<DashRefreshEvent>((event, emit) async {
-      if (state is DashErrorState || state is DashUnknownErrorState) {
-        emit(DashInitialState());
-      }
-
+    on<DashLoadEvent>((event, emit) async {
       try {
         List<DashEntity> list = await repository.data();
         emit(DashReadyState(list: list));
@@ -27,6 +23,11 @@ class DashBloc extends Bloc<DashEvent, DashState> {
       } on Exception catch (e, st) {
         emit(DashUnknownErrorState(exception: e, stackTrace: st));
       }
+    });
+
+    on<DashRefreshEvent>((event, emit) async {
+      emit(DashInitialState());
+      add(DashLoadEvent());
     });
   }
 }

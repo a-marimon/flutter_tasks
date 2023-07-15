@@ -9,6 +9,10 @@ class CounterLoadEvent extends CounterEvent {
   const CounterLoadEvent();
 }
 
+class CounterReLoadEvent extends CounterEvent {
+  const CounterReLoadEvent();
+}
+
 class CounterAddEvent extends CounterEvent {
   final int pas;
 
