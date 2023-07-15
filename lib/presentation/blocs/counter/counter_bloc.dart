@@ -38,11 +38,11 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       }
       add(const CounterLoadEvent());
     });
-    on<CounterAddEvent>((event, emit) {
-      if (state is CounterReadyState) _operation(event.pas, emit, state as CounterReadyState, operation: '+');
+    on<CounterAddEvent>((event, emit) async {
+      if (state is CounterReadyState) await _operation(event.pas, emit, state as CounterReadyState, operation: '+');
     });
-    on<CounterDelEvent>((event, emit) {
-      if (state is CounterReadyState) _operation(event.pas, emit, state as CounterReadyState, operation: '-');
+    on<CounterDelEvent>((event, emit) async {
+      if (state is CounterReadyState) await _operation(event.pas, emit, state as CounterReadyState, operation: '-');
     });
   }
 
@@ -50,19 +50,21 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
     CounterEntity last = state.entity;
     emit(state.copyWith(request: true));
     late int toSum;
+    CounterEntity? entity;
     switch (operation) {
       case '+':
         toSum = last.current + pass;
+        entity = await repository.save(name: name, operation: '+', value: toSum);
         break;
       case '-':
         toSum = last.current - pass;
+        entity = await repository.save(name: name, operation: '-', value: toSum);
         break;
       default:
         toSum = 0;
         break;
     }
     try {
-      CounterEntity? entity = await repository.save(name: name, operation: '+', value: toSum);
       emit(state.copyWith(entity: entity ?? last));
       //Refrescar datos del DashBloc
       // Al estar en el topWidget , el context que me provee el goRouter puede acceder a ese bloc
